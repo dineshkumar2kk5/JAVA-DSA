@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Striver's A2Z DSA Sheet Tracker</title>
+<meta name="description" content="Track your progress on Striver's A2Z DSA Course — 455+ problems with LeetCode, GFG & TakeUForward links.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080b14;
+  --surface:#0d1117;
+  --card:#111827;
+  --card2:#151d2c;
+  --border:#1e2d3d;
+  --border2:#243447;
+  --accent:#6366f1;
+  --accent-glow:rgba(99,102,241,0.3);
+  --accent2:#10b981;
+  --accent2-glow:rgba(16,185,129,0.25);
+  --accent3:#f59e0b;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --muted:#4b5563;
+  --easy:#10b981;
+  --easy-bg:rgba(16,185,129,0.1);
+  --med:#f59e0b;
+  --med-bg:rgba(245,158,11,0.1);
+  --hard:#ef4444;
+  --hard-bg:rgba(239,68,68,0.1);
+  --solved-bg:rgba(16,185,129,0.06);
+  --rev-bg:rgba(245,158,11,0.07);
+  --radius:10px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;line-height:1.5}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* HEADER */
+#header{
+  background:rgba(13,17,23,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  position:sticky;top:0;z-index:200;
+}
+.header-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;gap:16px;
+  height:60px;flex-wrap:wrap;padding:8px 0;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),#818cf8);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  box-shadow:0 0 20px var(--accent-glow);
+}
+.logo-text{font-size:16px;font-weight:800;letter-spacing:-0.5px;white-space:nowrap;
+  background:linear-gradient(90deg,#a5b4fc,#6366f1,#10b981);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+.progress-section{flex:1;min-width:180px;display:flex;align-items:center;gap:10px}
+.global-bar-wrap{flex:1;background:var(--border);height:6px;border-radius:3px;overflow:hidden}
+.global-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+#global-stats{font-size:12px;color:var(--text2);white-space:nowrap;font-weight:600}
+
+.header-btns{display:flex;gap:6px;align-items:center}
+.btn{
+  background:var(--card);border:1px solid var(--border2);
+  color:var(--text2);padding:6px 14px;border-radius:7px;
+  font-size:12px;font-weight:600;cursor:pointer;
+  transition:all .15s;white-space:nowrap;font-family:inherit;
+}
+.btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(99,102,241,0.08)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),#818cf8);
+  border:none;color:#fff;
+  box-shadow:0 2px 10px var(--accent-glow);
+}
+.btn-primary:hover{opacity:.9;color:#fff;transform:translateY(-1px);box-shadow:0 4px 20px var(--accent-glow)}
+.btn-danger:hover{border-color:#ef4444;color:#ef4444;background:rgba(239,68,68,0.08)}
+
+/* STATS DASHBOARD */
+#stats-bar{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:14px 24px;
+}
+.stats-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;
+}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px 16px;
+  transition:border-color .2s;cursor:default;
+}
+.stat-card:hover{border-color:var(--border2)}
+.stat-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:800;letter-spacing:-1px;line-height:1}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.stat-easy .stat-value{color:var(--easy)}
+.stat-med .stat-value{color:var(--med)}
+.stat-hard .stat-value{color:var(--hard)}
+.stat-total .stat-value{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-rev .stat-value{color:var(--accent3)}
+
+/* CONTROLS */
+#controls{
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  padding:10px 24px;
+  position:sticky;top:60px;z-index:190;
+}
+.controls-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:340px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text2);font-size:14px;pointer-events:none}
+input[type=text]{
+  background:var(--card);border:1px solid var(--border2);
+  color:var(--text);padding:7px 12px 7px 32px;
+  border-radius:7px;font-size:13px;width:100%;
+  outline:none;font-family:inherit;transition:border-color .15s;
+}
+input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+select{
+  background:var(--card);border:1px solid var(--border2);
+  color:var(--text);padding:7px 10px;border-radius:7px;
+  font-size:12px;cursor:pointer;outline:none;font-family:inherit;
+  transition:border-color .15s;
+}
+select:focus{border-color:var(--accent)}
+.ctrl-divider{width:1px;height:24px;background:var(--border);flex-shrink:0}
+.expand-btns{display:flex;gap:4px}
+
+/* MAIN CONTENT */
+#main{padding:20px 24px;max-width:1280px;margin:0 auto;padding-bottom:60px}
+
+/* STEP CARDS */
+.step{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:14px;
+  overflow:hidden;
+  transition:border-color .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--border2)}
+.step.has-progress{border-color:rgba(99,102,241,0.25)}
+
+.step-header{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;cursor:pointer;user-select:none;
+  transition:background .15s;
+}
+.step-header:hover{background:rgba(99,102,241,0.04)}
+
+.step-num{
+  background:linear-gradient(135deg,var(--accent),#818cf8);
+  color:#fff;border-radius:7px;
+  padding:3px 10px;font-size:11px;font-weight:800;
+  flex-shrink:0;letter-spacing:.3px;
+  box-shadow:0 2px 8px var(--accent-glow);
+}
+.step-title{font-size:14px;font-weight:700;flex:1;letter-spacing:-0.2px}
+.step-count{font-size:11px;color:var(--text2);flex-shrink:0}
+
+.step-progress-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.step-bar{width:90px;background:var(--border);height:4px;border-radius:2px;overflow:hidden}
+.step-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s cubic-bezier(.4,0,.2,1)}
+.step-pct{font-size:11px;color:var(--text2);min-width:28px;text-align:right;font-weight:600}
+
+.chevron{color:var(--text2);font-size:12px;transition:transform .25s;flex-shrink:0}
+.chevron.open{transform:rotate(180deg)}
+
+/* STEP BODY */
+.step-body{display:none;border-top:1px solid var(--border)}
+.step-body.open{display:block}
+
+/* TOPICS */
+.topic{border-bottom:1px solid var(--border)}
+.topic:last-child{border-bottom:none}
+
+.topic-header{
+  padding:9px 18px 9px 44px;
+  font-size:11px;font-weight:700;
+  color:var(--text2);
+  text-transform:uppercase;letter-spacing:.7px;
+  background:rgba(255,255,255,.018);
+  cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  transition:color .15s,background .15s;
+}
+.topic-header:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.topic-chevron{font-size:10px;transition:transform .2s;flex-shrink:0}
+.topic-chevron.open{transform:rotate(90deg)}
+.topic-count{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;font-size:10px}
+.topic-body{display:none}
+.topic-body.open{display:block}
+
+/* PROBLEM ROWS */
+.prob-row{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 18px 8px 44px;
+  border-bottom:1px solid rgba(255,255,255,.03);
+  transition:background .12s;
+  cursor:pointer;position:relative;
+}
+.prob-row:last-child{border-bottom:none}
+.prob-row:hover{background:rgba(255,255,255,.03)}
+.prob-row.solved{background:var(--solved-bg)}
+.prob-row.solved:hover{background:rgba(16,185,129,0.1)}
+.prob-row.revision{background:var(--rev-bg)}
+.prob-row.revision:hover{background:rgba(245,158,11,0.12)}
+
+/* Subtle left accent bar */
+.prob-row.solved::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--easy)}
+.prob-row.revision::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--med)}
+
+.check-box{
+  width:18px;height:18px;border:1.5px solid var(--border2);
+  border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;transition:all .15s;
+}
+.prob-row.solved .check-box{background:var(--easy);border-color:var(--easy);color:#fff}
+.prob-row.revision .check-box{background:var(--med);border-color:var(--med);color:#fff}
+.prob-row:not(.solved):not(.revision):hover .check-box{border-color:var(--accent);background:rgba(99,102,241,0.1)}
+
+.prob-num{font-size:10px;color:var(--muted);min-width:28px;font-weight:600;flex-shrink:0}
+.prob-name{flex:1;font-size:13px;line-height:1.4;font-weight:500}
+.prob-row.solved .prob-name{color:var(--text2)}
+
+.diff-badge{
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:20px;
+  flex-shrink:0;letter-spacing:.3px;
+}
+.diff-badge.easy{background:var(--easy-bg);color:var(--easy);border:1px solid rgba(16,185,129,0.2)}
+.diff-badge.medium{background:var(--med-bg);color:var(--med);border:1px solid rgba(245,158,11,0.2)}
+.diff-badge.hard{background:var(--hard-bg);color:var(--hard);border:1px solid rgba(239,68,68,0.2)}
+.diff-badge.unknown{background:rgba(100,100,120,.1);color:var(--text2);border:1px solid var(--border)}
+
+.prob-links{display:flex;gap:4px;flex-shrink:0}
+.prob-link{
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:20px;
+  text-decoration:none;border:1px solid;
+  transition:all .15s;display:inline-flex;align-items:center;gap:3px;
+}
+.lc-link{color:#f5a623;border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.06)}
+.lc-link:hover{background:rgba(245,166,35,.18);transform:translateY(-1px)}
+.gfg-link{color:#2f8d46;border-color:rgba(47,141,70,.3);background:rgba(47,141,70,.06)}
+.gfg-link:hover{background:rgba(47,141,70,.18);transform:translateY(-1px)}
+.yt-link{color:#ff4b4b;border-color:rgba(255,0,0,.3);background:rgba(255,0,0,.06)}
+.yt-link:hover{background:rgba(255,0,0,.18);transform:translateY(-1px)}
+.article-link{color:#38bdf8;border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.06)}
+.article-link:hover{background:rgba(56,189,248,.18);transform:translateY(-1px)}
+
+.rev-btn{
+  font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:20px;
+  border:1px solid var(--border);
+  background:none;color:var(--text2);
+  cursor:pointer;transition:all .15s;
+  flex-shrink:0;font-family:inherit;
+}
+.rev-btn:hover{border-color:var(--med);color:var(--med);background:var(--rev-bg)}
+.prob-row.revision .rev-btn{border-color:var(--med);color:var(--med);background:var(--rev-bg)}
+
+/* EMPTY FILTER STATE */
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--text2);
+}
+.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.5}
+.empty-state h3{font-size:16px;margin-bottom:8px;color:var(--text)}
+.empty-state p{font-size:13px}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--accent);color:#fff;
+  padding:10px 20px;border-radius:10px;
+  font-size:13px;font-weight:600;
+  display:none;z-index:999;
+  box-shadow:0 8px 24px rgba(99,102,241,0.4);
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}}
+
+/* HIDDEN */
+.hidden-prob,.hidden-topic,.hidden-step{display:none!important}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  #header,#controls,#stats-bar{padding-left:14px;padding-right:14px}
+  #main{padding:12px 14px 60px}
+  .step-header{padding:12px 14px}
+  .prob-row{padding:8px 14px 8px 36px}
+  .topic-header{padding-left:36px}
+  .step-bar{width:60px}
+  .prob-links{display:none}
+  .stat-card{padding:10px 12px}
+}
+
+/* ANIMATIONS */
+.step-body.open{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.prob-row{animation:rowIn .15s ease both}
+@keyframes rowIn{from{opacity:0}to{opacity:1}}
+
+/* PROBLEM NAME — clickable hint */
+.prob-name{
+  cursor:pointer;
+  transition:color .15s;
+}
+.prob-name:hover{color:var(--accent)!important;text-decoration:underline;text-underline-offset:3px}
+
+/* ====== SIDE DRAWER ====== */
+#drawer-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:800;opacity:0;pointer-events:none;
+  transition:opacity .25s;
+  backdrop-filter:blur(4px);
+}
+#drawer-overlay.active{opacity:1;pointer-events:all}
+
+#drawer{
+  position:fixed;top:0;right:-540px;bottom:0;
+  width:min(540px,100vw);
+  background:#0d1117;
+  border-left:1px solid var(--border2);
+  z-index:900;
+  display:flex;flex-direction:column;
+  transition:right .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:-20px 0 60px rgba(0,0,0,.5);
+}
+#drawer.open{right:0}
+
+#drawer-head{
+  padding:18px 20px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--surface);
+  flex-shrink:0;
+}
+#drawer-title{
+  flex:1;font-size:16px;font-weight:700;
+  letter-spacing:-.3px;line-height:1.35;
+}
+#drawer-diff{
+  font-size:11px;font-weight:700;
+  padding:3px 10px;border-radius:20px;
+  flex-shrink:0;margin-top:2px;
+}
+#drawer-close{
+  width:30px;height:30px;border-radius:7px;
+  border:1px solid var(--border2);
+  background:var(--card);color:var(--text2);
+  cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+  font-family:inherit;
+}
+#drawer-close:hover{border-color:var(--accent);color:var(--accent)}
+
+#drawer-body{flex:1;overflow-y:auto;padding:20px}
+
+.drawer-section{margin-bottom:22px}
+.drawer-section-title{
+  font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.8px;
+  color:var(--text2);margin-bottom:10px;
+  padding-bottom:6px;border-bottom:1px solid var(--border);
+}
+
+/* Big platform link buttons */
+.platform-btns{display:flex;flex-direction:column;gap:10px}
+.platform-btn{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:10px;
+  text-decoration:none;border:1px solid;
+  transition:all .2s;cursor:pointer;
+  font-family:inherit;
+}
+.platform-btn:hover{transform:translateX(4px)}
+.platform-btn-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.platform-btn-info{flex:1}
+.platform-btn-name{font-size:13px;font-weight:700;display:block}
+.platform-btn-desc{font-size:11px;color:var(--text2);margin-top:1px}
+.platform-btn-arrow{font-size:16px;color:var(--text2)}
+.platform-btn:hover .platform-btn-arrow{color:inherit}
+
+.btn-lc{border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.05);color:#f5a623}
+.btn-lc:hover{border-color:rgba(245,166,35,.6);background:rgba(245,166,35,.12)}
+.btn-lc .platform-btn-icon{background:rgba(245,166,35,.1)}
+
+.btn-gfg{border-color:rgba(47,141,70,.3);background:rgba(47,141,70,.05);color:#2f8d46}
+.btn-gfg:hover{border-color:rgba(47,141,70,.6);background:rgba(47,141,70,.12)}
+.btn-gfg .platform-btn-icon{background:rgba(47,141,70,.1)}
+
+.btn-yt{border-color:rgba(255,0,0,.3);background:rgba(255,0,0,.05);color:#ff4b4b}
+.btn-yt:hover{border-color:rgba(255,0,0,.6);background:rgba(255,0,0,.15)}
+.btn-yt .platform-btn-icon{background:rgba(255,0,0,.1)}
+
+.btn-article{border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.05);color:#38bdf8}
+.btn-article:hover{border-color:rgba(56,189,248,.6);background:rgba(56,189,248,.15)}
+.btn-article .platform-btn-icon{background:rgba(56,189,248,.1)}
+
+.btn-disabled{opacity:.35;pointer-events:none;cursor:not-allowed}
+
+/* Action row inside drawer */
+.drawer-actions{display:flex;gap:8px;margin-top:4px}
+.drawer-action-btn{
+  flex:1;padding:11px 8px;
+  border-radius:9px;border:1px solid var(--border2);
+  background:var(--card);color:var(--text2);
+  font-size:12px;font-weight:700;
+  cursor:pointer;transition:all .15s;
+  font-family:inherit;text-align:center;
+}
+.drawer-action-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(99,102,241,.08)}
+.drawer-action-btn.active-solved{border-color:var(--easy);color:var(--easy);background:rgba(16,185,129,.1)}
+.drawer-action-btn.active-rev{border-color:var(--med);color:var(--med);background:rgba(245,158,11,.1)}
+
+/* Notes textarea */
+.notes-area{
+  width:100%;min-height:90px;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:8px;padding:10px 12px;
+  color:var(--text);font-size:12px;
+  resize:vertical;outline:none;
+  font-family:inherit;line-height:1.5;
+  transition:border-color .15s;
+}
+.notes-area:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-glow)}
+.notes-area::placeholder{color:var(--muted)}
+.notes-save-btn{
+  margin-top:6px;padding:6px 16px;
+  background:var(--accent);border:none;
+  color:#fff;border-radius:7px;
+  font-size:11px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  transition:opacity .15s;
+}
+.notes-save-btn:hover{opacity:.85}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="return false">
+      <div class="logo-icon">⚡</div>
+      <span class="logo-text">Striver's A2Z DSA</span>
+    </a>
+    <div class="progress-section">
+      <div class="global-bar-wrap"><div class="global-bar-fill" id="global-fill"></div></div>
+      <div id="global-stats">0 / 455</div>
+    </div>
+    <div class="header-btns">
+      <button class="btn btn-primary" onclick="exportData()">⬇ Export</button>
+      <button class="btn" onclick="document.getElementById('imp').click()">⬆ Import</button>
+      <input type="file" id="imp" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn btn-danger" onclick="resetAll()">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div id="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-card stat-total">
+      <div class="stat-label">Total Solved</div>
+      <div class="stat-value" id="st-total">0</div>
+      <div class="stat-sub" id="st-total-sub">out of 455</div>
+    </div>
+    <div class="stat-card stat-easy">
+      <div class="stat-label">Easy</div>
+      <div class="stat-value" id="st-easy">0</div>
+      <div class="stat-sub" id="st-easy-sub">solved</div>
+    </div>
+    <div class="stat-card stat-med">
+      <div class="stat-label">Medium</div>
+      <div class="stat-value" id="st-med">0</div>
+      <div class="stat-sub" id="st-med-sub">solved</div>
+    </div>
+    <div class="stat-card stat-hard">
+      <div class="stat-label">Hard</div>
+      <div class="stat-value" id="st-hard">0</div>
+      <div class="stat-sub" id="st-hard-sub">solved</div>
+    </div>
+    <div class="stat-card stat-rev">
+      <div class="stat-label">Revision</div>
+      <div class="stat-value" id="st-rev">0</div>
+      <div class="stat-sub">marked for review</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completion</div>
+      <div class="stat-value" id="st-pct" style="color:var(--accent)">0%</div>
+      <div class="stat-sub" id="st-streak">keep going!</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div id="controls">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="Search problems..." oninput="filterProblems()">
+    </div>
+    <select id="fStatus" onchange="filterProblems()">
+      <option value="">All Status</option>
+      <option value="unsolved">Unsolved</option>
+      <option value="solved">Solved</option>
+      <option value="revision">Revision</option>
+    </select>
+    <select id="fDiff" onchange="filterProblems()">
+      <option value="">All Difficulty</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <div class="ctrl-divider"></div>
+    <div class="expand-btns">
+      <button class="btn" onclick="expandAll()">Expand All</button>
+      <button class="btn" onclick="collapseAll()">Collapse All</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main"></div>
+<div id="toast"></div>
+
+<!-- PROBLEM DETAIL DRAWER -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="drawer">
+  <div id="drawer-head">
+    <div style="flex:1">
+      <div id="drawer-title">Problem Title</div>
+      <div style="margin-top:6px;display:flex;gap:6px;align-items:center">
+        <span id="drawer-diff" class="diff-badge easy">easy</span>
+        <span id="drawer-num" style="font-size:11px;color:var(--muted)">001</span>
+      </div>
+    </div>
+    <button id="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div id="drawer-body">
+    <div class="drawer-section">
+      <div class="drawer-section-title">Your Progress</div>
+      <div class="drawer-actions">
+        <button class="drawer-action-btn" id="da-solve" onclick="drawerToggleSolve()">✓ Mark Solved</button>
+        <button class="drawer-action-btn" id="da-rev" onclick="drawerToggleRev()">↻ Mark Revision</button>
+      </div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">Study This Problem</div>
+      <div class="platform-btns" id="drawer-links"></div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">📝 Your Notes</div>
+      <textarea class="notes-area" id="drawer-notes" placeholder="Write your approach, complexity, or any notes here..."></textarea>
+      <button class="notes-save-btn" onclick="saveNote()">💾 Save Note</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const DATA=[
+{step:1,title:"Learn the Basics",topics:[
+{t:"1.1 — Things to Know in C++/Java/Python",probs:[
+{id:"p001",n:"User Input / Output",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/c-input-output/"},
+{id:"p002",n:"Data Types",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/datatypes-in-c/"},
+{id:"p003",n:"If Else Statements",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/decision-making-statements-in-c/"},
+{id:"p004",n:"Switch Statement",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/switch-statement-in-c/"},
+{id:"p005",n:"What are Arrays, Strings?",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/arrays/arrays-introduction/"},
+{id:"p006",n:"For Loops",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/for-loops-in-c/"},
+{id:"p007",n:"While Loops",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/while-and-do-while-loops-in-c/"},
+{id:"p008",n:"Functions (Pass by Value, Pass by Reference)",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/c/functions-in-c/"},
+{id:"p009",n:"Time Complexity (Best, Worst, Average)",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/time-and-space-complexity-1/"}
+]},
+{t:"1.2 — Build-up Logical Thinking (Patterns)",probs:[
+{id:"p010",n:"Pattern 1 — Right Triangle Stars",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-1-rectangular-star-pattern/"},
+{id:"p011",n:"Pattern 2 — Right Triangle Numbers",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-2-right-angled-triangle-pattern/"},
+{id:"p012",n:"Pattern 3 — Same Number Triangle",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-3-right-angled-number-pyramid/"},
+{id:"p013",n:"Pattern 4 — Inverted Right Triangle Stars",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-4-right-angled-triangle-pattern/"},
+{id:"p014",n:"Pattern 5 — Inverted Triangle Numbers",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-5-inverted-right-pyramid/"},
+{id:"p015",n:"Pattern 6 — Floyd's Triangle",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-6-floyds-triangle/"},
+{id:"p016",n:"Pattern 7 — Star Pyramid Centered",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-7-star-pyramid/"},
+{id:"p017",n:"Pattern 8 — Inverted Star Pyramid",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-8-inverted-star-pyramid/"},
+{id:"p018",n:"Pattern 9 — Diamond Pattern",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-9-diamond-star-pattern/"},
+{id:"p019",n:"Pattern 10 — Half Diamond Star",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-10-half-diamond-star-pattern/"},
+{id:"p020",n:"Pattern 11 — Binary Number Triangle",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-11-binary-number-triangle-pattern/"},
+{id:"p021",n:"Pattern 12 — Number Crown",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-12-number-crown-pattern/"},
+{id:"p022",n:"Pattern 13 — Increasing Numbers",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-13-increasing-letter-triangle-pattern/"},
+{id:"p023",n:"Pattern 14 — Alphabet Ramp",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-14-increasing-letter-triangle-pattern/"},
+{id:"p024",n:"Pattern 15 — Alphabet Hill",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-15-reverse-letter-triangle-pattern/"},
+{id:"p025",n:"Pattern 16 — Alpha Triangle Inverted",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-16-alpha-ramp-pattern/"},
+{id:"p026",n:"Pattern 17 — Symmetric Star",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-17-alpha-hill-pattern/"},
+{id:"p027",n:"Pattern 18 — Symmetric Void",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-18-symmetric-void-pattern/"},
+{id:"p028",n:"Pattern 19 — Butterfly Pattern",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-19-symmetric-butterfly-pattern/"},
+{id:"p029",n:"Pattern 20 — Hollow Rectangle",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-20-hollow-rectangle-pattern/"},
+{id:"p030",n:"Pattern 21 — Number Pattern Decreasing",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/maths/pattern-21-the-number-pattern/"},
+{id:"p031",n:"Pattern 22 — Spiral Matrix",d:"hard",lc:"59",gfg:"",tuf:"https://takeuforward.org/maths/pattern-22-insert-in-a-spiral-manner/"}
+]},
+{t:"1.3 — C++ STL / Java Collections",probs:[
+{id:"p032",n:"C++ STL / Java Collections",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/stl-and-pairs-in-cpp/"}
+]},
+{t:"1.4 — Know Basic Maths",probs:[
+{id:"p033",n:"Count Digits",d:"easy",lc:"",gfg:"count-digits5",tuf:"https://takeuforward.org/data-structures/count-digits-in-a-number/"},
+{id:"p034",n:"Reverse a Number",d:"easy",lc:"",gfg:"reverse-a-number",tuf:"https://takeuforward.org/data-structures/reverse-digits-of-a-number/"},
+{id:"p035",n:"Check Palindrome",d:"easy",lc:"9",gfg:"palindrome-number",tuf:"https://takeuforward.org/data-structures/check-if-a-number-is-palindrome-or-not/"},
+{id:"p036",n:"GCD / HCF",d:"easy",lc:"",gfg:"gcd-hcf",tuf:"https://takeuforward.org/data-structures/find-gcd-of-two-numbers/"},
+{id:"p037",n:"Armstrong Numbers",d:"easy",lc:"",gfg:"armstrong-numbers",tuf:"https://takeuforward.org/data-structures/check-if-a-number-is-armstrong-number-or-not/"},
+{id:"p038",n:"Print All Divisors",d:"easy",lc:"",gfg:"sum-of-all-divisors",tuf:"https://takeuforward.org/data-structures/print-all-divisors-of-a-given-number/"},
+{id:"p039",n:"Check for Prime",d:"easy",lc:"",gfg:"prime-number",tuf:"https://takeuforward.org/data-structures/check-if-a-number-is-prime-or-not/"}
+]},
+{t:"1.5 — Learn Basic Recursion",probs:[
+{id:"p040",n:"Understand recursion — Print 1 to N",d:"easy",lc:"",gfg:"print-1-to-n-without-loops",tuf:"https://takeuforward.org/recursion/introduction-to-recursion-understand-recursion-by-printing-something-n-times/"},
+{id:"p041",n:"Understand recursion — Print N to 1",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/recursion/print-1-to-n-using-recursion/"},
+{id:"p042",n:"Sum of First N Numbers",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/recursion/sum-of-first-n-numbers/"},
+{id:"p043",n:"Factorial of N Numbers",d:"easy",lc:"",gfg:"factorial-recursive",tuf:"https://takeuforward.org/recursion/factorial-of-a-number-using-recursion/"},
+{id:"p044",n:"Reverse an Array",d:"easy",lc:"",gfg:"reverse-an-array",tuf:"https://takeuforward.org/recursion/reverse-an-array/"},
+{id:"p045",n:"Check if a String is Palindrome",d:"easy",lc:"125",gfg:"palindrome-string",tuf:"https://takeuforward.org/recursion/check-if-given-string-is-palindrome-or-not/"},
+{id:"p046",n:"Fibonacci Number",d:"easy",lc:"509",gfg:"",tuf:"https://takeuforward.org/recursion/fibonacci-series-using-recursion/"}
+]},
+{t:"1.6 — Learn Basic Hashing",probs:[
+{id:"p047",n:"Hashing Theory",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/hashing/hashing-maps-time-complexity-and-collisions/"},
+{id:"p048",n:"Count Frequencies of Array Elements",d:"easy",lc:"",gfg:"frequency-of-array-elements-1587115620",tuf:"https://takeuforward.org/hashing/count-frequency-of-each-element-in-the-array/"},
+{id:"p049",n:"Find the Highest / Lowest Frequency Element",d:"easy",lc:"",gfg:"highest-and-lowest-frequency-element",tuf:"https://takeuforward.org/hashing/find-the-highest-lowest-frequency-element/"}
+]}
+]},
+{step:2,title:"Sorting Techniques",topics:[
+{t:"2.1 — Sorting I",probs:[
+{id:"p050",n:"Selection Sort",d:"easy",lc:"",gfg:"selection-sort",tuf:"https://takeuforward.org/sorting/selection-sort-algorithm/"},
+{id:"p051",n:"Bubble Sort",d:"easy",lc:"",gfg:"bubble-sort",tuf:"https://takeuforward.org/sorting/bubble-sort-algorithm/"},
+{id:"p052",n:"Insertion Sort",d:"easy",lc:"",gfg:"insertion-sort",tuf:"https://takeuforward.org/sorting/insertion-sort-algorithm/"}
+]},
+{t:"2.2 — Sorting II",probs:[
+{id:"p053",n:"Merge Sort",d:"medium",lc:"912",gfg:"merge-sort",tuf:"https://takeuforward.org/sorting/merge-sort-algorithm/"},
+{id:"p054",n:"Recursive Bubble Sort",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/sorting/recursive-bubble-sort-algorithm/"},
+{id:"p055",n:"Recursive Insertion Sort",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/sorting/recursive-insertion-sort-algorithm/"},
+{id:"p056",n:"Quick Sort",d:"medium",lc:"",gfg:"quick-sort",tuf:"https://takeuforward.org/sorting/quick-sort-algorithm/"}
+]}
+]},
+{step:3,title:"Arrays",topics:[
+{t:"3.1 — Easy",probs:[
+{id:"p057",n:"Largest Element in an Array",d:"easy",lc:"",gfg:"largest-element-in-array4009",tuf:"https://takeuforward.org/arrays/find-the-largest-element-in-an-array/"},
+{id:"p058",n:"Second Largest Element",d:"easy",lc:"",gfg:"second-largest3735",tuf:"https://takeuforward.org/arrays/find-second-smallest-and-second-largest-element-in-an-array/"},
+{id:"p059",n:"Check if the Array is Sorted",d:"easy",lc:"1752",gfg:"",tuf:"https://takeuforward.org/arrays/check-if-an-array-is-sorted/"},
+{id:"p060",n:"Remove Duplicates from Sorted Array",d:"easy",lc:"26",gfg:"",tuf:"https://takeuforward.org/arrays/remove-duplicates-in-place-from-sorted-array/"},
+{id:"p061",n:"Left Rotate an Array by One Place",d:"easy",lc:"",gfg:"left-rotate-an-array-by-one4816",tuf:"https://takeuforward.org/arrays/left-rotate-the-array-by-one/"},
+{id:"p062",n:"Left Rotate an Array by D Places",d:"easy",lc:"189",gfg:"rotate-array-by-n-elements-1587115621",tuf:"https://takeuforward.org/arrays/left-rotate-array-by-d-places/"},
+{id:"p063",n:"Move Zeros to End",d:"easy",lc:"283",gfg:"",tuf:"https://takeuforward.org/arrays/move-all-zeros-to-the-end-of-the-array/"},
+{id:"p064",n:"Linear Search",d:"easy",lc:"",gfg:"who-will-win-1587115621",tuf:"https://takeuforward.org/arrays/linear-search-in-an-array/"},
+{id:"p065",n:"Find the Union",d:"easy",lc:"",gfg:"union-of-two-sorted-arrays",tuf:"https://takeuforward.org/arrays/union-of-two-sorted-arrays/"},
+{id:"p066",n:"Find Missing Number in an Array",d:"easy",lc:"268",gfg:"",tuf:"https://takeuforward.org/arrays/find-the-missing-number-in-an-array/"},
+{id:"p067",n:"Maximum Consecutive Ones",d:"easy",lc:"485",gfg:"",tuf:"https://takeuforward.org/arrays/count-maximum-consecutive-ones-in-the-array/"},
+{id:"p068",n:"Find the Number that Appears Once (Others Twice)",d:"easy",lc:"136",gfg:"",tuf:"https://takeuforward.org/arrays/find-the-number-that-appears-once-and-the-other-numbers-twice/"},
+{id:"p069",n:"Longest Subarray with Given Sum K (Positives)",d:"easy",lc:"",gfg:"longest-sub-array-with-sum-k0809",tuf:"https://takeuforward.org/arrays/longest-subarray-with-sum-k/"},
+{id:"p070",n:"Longest Subarray with Sum K (Positives + Negatives)",d:"medium",lc:"",gfg:"longest-sub-array-with-sum-k0809",tuf:"https://takeuforward.org/arrays/longest-subarray-with-sum-k-approach-2/"}
+]},
+{t:"3.2 — Medium",probs:[
+{id:"p071",n:"2Sum Problem",d:"medium",lc:"1",gfg:"",tuf:"https://takeuforward.org/data-structures/two-sum-check-if-a-pair-with-given-sum-exists-in-array/"},
+{id:"p072",n:"Sort an Array of 0s, 1s and 2s",d:"medium",lc:"75",gfg:"",tuf:"https://takeuforward.org/data-structures/sort-an-array-of-0s-1s-and-2s/"},
+{id:"p073",n:"Majority Element (>N/2 times)",d:"medium",lc:"169",gfg:"",tuf:"https://takeuforward.org/data-structures/find-the-majority-element-that-occurs-more-than-n-2-times/"},
+{id:"p074",n:"Kadane's Algorithm — Maximum Subarray Sum",d:"medium",lc:"53",gfg:"",tuf:"https://takeuforward.org/data-structures/kadanes-algorithm-maximum-subarray-sum-in-an-array/"},
+{id:"p075",n:"Print Subarray with Maximum Subarray Sum",d:"medium",lc:"53",gfg:"",tuf:"https://takeuforward.org/data-structures/kadanes-algorithm-maximum-subarray-sum-in-an-array/"},
+{id:"p076",n:"Stock Buy and Sell",d:"medium",lc:"121",gfg:"",tuf:"https://takeuforward.org/data-structures/stock-buy-and-sell/"},
+{id:"p077",n:"Rearrange the Array Elements by Sign",d:"medium",lc:"2149",gfg:"",tuf:"https://takeuforward.org/arrays/rearrange-array-elements-by-sign/"},
+{id:"p078",n:"Next Permutation",d:"medium",lc:"31",gfg:"",tuf:"https://takeuforward.org/data-structures/next_permutation-find-next-lexicographically-greater-permutation/"},
+{id:"p079",n:"Leaders in an Array",d:"easy",lc:"",gfg:"leaders-in-an-array-1587115620",tuf:"https://takeuforward.org/arrays/leaders-in-an-array-problem/"},
+{id:"p080",n:"Longest Consecutive Sequence",d:"medium",lc:"128",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-consecutive-sequence-in-an-array/"},
+{id:"p081",n:"Set Matrix Zeroes",d:"medium",lc:"73",gfg:"",tuf:"https://takeuforward.org/data-structures/set-matrix-zero/"},
+{id:"p082",n:"Rotate Matrix by 90 Degrees",d:"medium",lc:"48",gfg:"",tuf:"https://takeuforward.org/data-structures/rotate-image-by-90-degree/"},
+{id:"p083",n:"Spiral Traversal of Matrix",d:"medium",lc:"54",gfg:"",tuf:"https://takeuforward.org/data-structures/spiral-traversal-of-matrix/"},
+{id:"p084",n:"Count Subarrays with Sum K",d:"medium",lc:"560",gfg:"",tuf:"https://takeuforward.org/data-structures/count-subarrays-with-given-sum/"},
+{id:"p085",n:"Pascal's Triangle",d:"medium",lc:"118",gfg:"",tuf:"https://takeuforward.org/data-structures/program-to-generate-pascals-triangle/"}
+]},
+{t:"3.3 — Hard",probs:[
+{id:"p086",n:"Majority Element (N/3 times)",d:"hard",lc:"229",gfg:"",tuf:"https://takeuforward.org/data-structures/majority-elementsn-3-times-find-the-elements-that-appears-more-than-n-3-times-in-the-array/"},
+{id:"p087",n:"3Sum",d:"medium",lc:"15",gfg:"",tuf:"https://takeuforward.org/data-structures/3-sum-find-triplets-that-add-up-to-a-zero/"},
+{id:"p088",n:"4Sum",d:"hard",lc:"18",gfg:"",tuf:"https://takeuforward.org/data-structures/4-sum-find-quads-that-add-up-to-a-target-value/"},
+{id:"p089",n:"Largest Subarray with 0 Sum",d:"medium",lc:"",gfg:"largest-subarray-with-0-sum",tuf:"https://takeuforward.org/data-structures/length-of-the-longest-subarray-with-zero-sum/"},
+{id:"p090",n:"Count Subarrays with Given XOR K",d:"hard",lc:"",gfg:"count-subarray-with-given-xor",tuf:"https://takeuforward.org/data-structures/count-the-number-of-subarrays-with-given-xor-k/"},
+{id:"p091",n:"Merge Overlapping Subintervals",d:"medium",lc:"56",gfg:"",tuf:"https://takeuforward.org/data-structures/merge-overlapping-sub-intervals/"},
+{id:"p092",n:"Merge Two Sorted Arrays without Extra Space",d:"hard",lc:"",gfg:"merge-two-sorted-arrays5135",tuf:"https://takeuforward.org/data-structures/merge-two-sorted-arrays-without-extra-space/"},
+{id:"p093",n:"Find the Repeating and Missing Number",d:"hard",lc:"",gfg:"find-the-missing-and-repeating2512",tuf:"https://takeuforward.org/data-structures/find-the-repeating-and-missing-numbers/"},
+{id:"p094",n:"Count Inversions",d:"hard",lc:"",gfg:"inversion-of-array-1587115620",tuf:"https://takeuforward.org/data-structures/count-inversions-in-an-array/"},
+{id:"p095",n:"Reverse Pairs",d:"hard",lc:"493",gfg:"",tuf:"https://takeuforward.org/data-structures/count-reverse-pairs/"},
+{id:"p096",n:"Maximum Product Subarray",d:"medium",lc:"152",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-product-subarray-in-an-array/"}
+]}
+]},
+{step:4,title:"Binary Search",topics:[
+{t:"4.1 — BS on 1D Arrays",probs:[
+{id:"p097",n:"Binary Search to Find X in Sorted Array",d:"easy",lc:"704",gfg:"",tuf:"https://takeuforward.org/data-structures/binary-search-explained/"},
+{id:"p098",n:"Lower Bound",d:"easy",lc:"",gfg:"floor-in-a-sorted-array-1587115620",tuf:"https://takeuforward.org/data-structures/implement-lower-bound-bs-2/"},
+{id:"p099",n:"Upper Bound",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-upper-bound/"},
+{id:"p100",n:"Search Insert Position",d:"easy",lc:"35",gfg:"",tuf:"https://takeuforward.org/data-structures/search-insert-position/"},
+{id:"p101",n:"Floor / Ceil in Sorted Array",d:"easy",lc:"",gfg:"floor-and-ceil-from-a-bst",tuf:"https://takeuforward.org/data-structures/floor-and-ceil-in-sorted-array/"},
+{id:"p102",n:"Find the First or Last Occurrence",d:"easy",lc:"34",gfg:"",tuf:"https://takeuforward.org/data-structures/last-occurrence-in-a-sorted-array/"},
+{id:"p103",n:"Count Occurrences in Sorted Array",d:"easy",lc:"",gfg:"number-of-occurrences-in-a-sorted-array",tuf:"https://takeuforward.org/data-structures/count-occurrences-in-sorted-array/"},
+{id:"p104",n:"Search in Rotated Sorted Array I",d:"medium",lc:"33",gfg:"",tuf:"https://takeuforward.org/data-structures/search-element-in-a-rotated-sorted-array/"},
+{id:"p105",n:"Search in Rotated Sorted Array II",d:"medium",lc:"81",gfg:"",tuf:"https://takeuforward.org/data-structures/search-element-in-rotated-sorted-array-2/"},
+{id:"p106",n:"Find Minimum in Rotated Sorted Array",d:"medium",lc:"153",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-in-rotated-sorted-array/"},
+{id:"p107",n:"Find Out How Many Times Array is Rotated",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/find-out-how-many-times-have-the-array-been-rotated/"},
+{id:"p108",n:"Single Element in a Sorted Array",d:"medium",lc:"540",gfg:"",tuf:"https://takeuforward.org/data-structures/search-single-element-in-a-sorted-array/"},
+{id:"p109",n:"Find Peak Element",d:"medium",lc:"162",gfg:"",tuf:"https://takeuforward.org/data-structures/peak-element-in-array/"}
+]},
+{t:"4.2 — BS on Answers",probs:[
+{id:"p110",n:"Find Square Root of a Number",d:"easy",lc:"69",gfg:"",tuf:"https://takeuforward.org/binary-search/finding-square-roots-using-binary-search/"},
+{id:"p111",n:"Find the Nth Root of a Number",d:"medium",lc:"",gfg:"nth-root-of-m",tuf:"https://takeuforward.org/data-structures/nth-root-of-m/"},
+{id:"p112",n:"Koko Eating Bananas",d:"medium",lc:"875",gfg:"",tuf:"https://takeuforward.org/binary-search/koko-eating-bananas/"},
+{id:"p113",n:"Minimum Days to Make M Bouquets",d:"medium",lc:"1482",gfg:"",tuf:"https://takeuforward.org/binary-search/minimum-days-to-make-m-bouquets/"},
+{id:"p114",n:"Find the Smallest Divisor",d:"medium",lc:"1283",gfg:"",tuf:"https://takeuforward.org/binary-search/find-the-smallest-divisor-given-a-threshold/"},
+{id:"p115",n:"Capacity to Ship Packages within D Days",d:"medium",lc:"1011",gfg:"",tuf:"https://takeuforward.org/binary-search/capacity-to-ship-packages-within-d-days/"},
+{id:"p116",n:"Kth Missing Positive Number",d:"easy",lc:"1539",gfg:"",tuf:"https://takeuforward.org/binary-search/kth-missing-positive-number/"},
+{id:"p117",n:"Aggressive Cows",d:"hard",lc:"",gfg:"aggressive-cows",tuf:"https://takeuforward.org/data-structures/aggressive-cows-detailed-solution/"},
+{id:"p118",n:"Book Allocation Problem",d:"hard",lc:"",gfg:"allocate-minimum-number-of-pages0",tuf:"https://takeuforward.org/data-structures/allocate-minimum-number-of-pages/"},
+{id:"p119",n:"Split Array — Largest Sum",d:"hard",lc:"410",gfg:"",tuf:"https://takeuforward.org/binary-search/split-array-largest-sum/"},
+{id:"p120",n:"Painter's Partition",d:"hard",lc:"",gfg:"painter-s-partition-problem",tuf:"https://takeuforward.org/data-structures/painters-partition-problem/"},
+{id:"p121",n:"Minimize Max Distance to Gas Station",d:"hard",lc:"",gfg:"minimize-max-distance-to-gas-station",tuf:"https://takeuforward.org/data-structures/minimize-the-maximum-distance-between-gas-stations/"},
+{id:"p122",n:"Median of 2 Sorted Arrays",d:"hard",lc:"4",gfg:"",tuf:"https://takeuforward.org/data-structures/median-of-two-sorted-arrays-of-different-sizes/"},
+{id:"p123",n:"Kth Element of 2 Sorted Arrays",d:"hard",lc:"",gfg:"kth-element-of-two-sorted-array1317",tuf:"https://takeuforward.org/data-structures/k-th-element-of-two-sorted-arrays/"}
+]},
+{t:"4.3 — BS on 2D Arrays",probs:[
+{id:"p124",n:"Find the Row with Maximum Number of 1s",d:"easy",lc:"",gfg:"row-with-max-1s0023",tuf:"https://takeuforward.org/data-structures/row-with-maximum-number-of-1s/"},
+{id:"p125",n:"Search in a 2D Matrix",d:"medium",lc:"74",gfg:"",tuf:"https://takeuforward.org/data-structures/search-in-a-sorted-2d-matrix/"},
+{id:"p126",n:"Search in a Row and Column Wise Sorted Matrix",d:"medium",lc:"240",gfg:"",tuf:"https://takeuforward.org/data-structures/search-in-a-row-wise-and-column-wise-sorted-2d-array/"},
+{id:"p127",n:"Find Peak Element (2D Matrix)",d:"hard",lc:"1901",gfg:"",tuf:"https://takeuforward.org/data-structures/peak-element-in-2d-matrix/"},
+{id:"p128",n:"Matrix Median",d:"hard",lc:"",gfg:"median-in-a-row-wise-sorted-matrix1527",tuf:"https://takeuforward.org/data-structures/median-of-row-wise-sorted-matrix/"}
+]}
+]},
+{step:5,title:"Strings",topics:[
+{t:"5.1 — Basic and Easy",probs:[
+{id:"p129",n:"Remove Outermost Parentheses",d:"easy",lc:"1021",gfg:"",tuf:"https://takeuforward.org/data-structures/remove-outermost-parentheses/"},
+{id:"p130",n:"Reverse Words in a String",d:"medium",lc:"151",gfg:"",tuf:"https://takeuforward.org/data-structures/reverse-words-in-a-string/"},
+{id:"p131",n:"Largest Odd Number in a String",d:"easy",lc:"1903",gfg:"",tuf:"https://takeuforward.org/data-structures/largest-odd-number-in-a-string/"},
+{id:"p132",n:"Longest Common Prefix",d:"easy",lc:"14",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-common-prefix/"},
+{id:"p133",n:"Isomorphic Strings",d:"easy",lc:"205",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-two-strings-are-isomorphic/"},
+{id:"p134",n:"Check Whether One String is a Rotation of Another",d:"easy",lc:"",gfg:"check-if-string-is-rotated",tuf:"https://takeuforward.org/data-structures/check-if-one-string-is-a-rotation-of-another-string/"},
+{id:"p135",n:"Check if Two Strings are Anagram of Each Other",d:"easy",lc:"242",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-two-strings-are-anagrams-of-each-other/"}
+]},
+{t:"5.2 — Medium",probs:[
+{id:"p136",n:"Sort Characters by Frequency",d:"medium",lc:"451",gfg:"",tuf:"https://takeuforward.org/data-structures/sort-characters-by-frequency/"},
+{id:"p137",n:"Maximum Nesting Depth of Parentheses",d:"easy",lc:"1614",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-nesting-depth-of-the-parentheses/"},
+{id:"p138",n:"Roman Number to Integer",d:"easy",lc:"13",gfg:"",tuf:"https://takeuforward.org/data-structures/roman-number-to-integer/"},
+{id:"p139",n:"String to Integer (atoi)",d:"medium",lc:"8",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-atoi/"},
+{id:"p140",n:"Count Number of Substrings",d:"medium",lc:"",gfg:"count-number-of-substrings",tuf:"https://takeuforward.org/data-structures/count-substrings-with-k-distinct-characters/"},
+{id:"p141",n:"Longest Palindromic Substring",d:"medium",lc:"5",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-palindromic-substring/"},
+{id:"p142",n:"Sum of Beauty of All Substrings",d:"medium",lc:"1781",gfg:"",tuf:"https://takeuforward.org/data-structures/sum-of-beauty-of-all-substrings/"},
+{id:"p143",n:"Minimum Bracket Reversals",d:"hard",lc:"",gfg:"count-the-reversals",tuf:"https://takeuforward.org/data-structures/minimum-bracket-reversals/"},
+{id:"p144",n:"Count and Say",d:"medium",lc:"38",gfg:"",tuf:"https://takeuforward.org/data-structures/count-and-say/"}
+]}
+]},
+{step:6,title:"Linked List",topics:[
+{t:"6.1 — Learn Basics",probs:[
+{id:"p145",n:"Introduction to Linked List",d:"easy",lc:"",gfg:"introduction-to-linked-list",tuf:"https://takeuforward.org/data-structures/introduction-to-linked-list/"},
+{id:"p146",n:"Inserting a Node in LinkedList",d:"easy",lc:"",gfg:"linked-list-insertion-1587115620",tuf:"https://takeuforward.org/data-structures/learn-linked-list-and-learn-problems/"},
+{id:"p147",n:"Deleting a Node in LinkedList",d:"easy",lc:"",gfg:"delete-a-node-in-single-linked-list",tuf:"https://takeuforward.org/data-structures/deletion-in-linked-list/"},
+{id:"p148",n:"Find the Length of a Linked List",d:"easy",lc:"",gfg:"count-nodes-of-linked-list",tuf:"https://takeuforward.org/linked-list/find-the-length-of-a-linked-list/"},
+{id:"p149",n:"Search in a Linked List",d:"easy",lc:"",gfg:"search-in-linked-list",tuf:"https://takeuforward.org/data-structures/search-an-element-in-a-linked-list/"}
+]},
+{t:"6.2 — Medium",probs:[
+{id:"p150",n:"Find the Middle of a LinkedList",d:"easy",lc:"876",gfg:"",tuf:"https://takeuforward.org/data-structures/find-middle-element-in-a-linked-list/"},
+{id:"p151",n:"Reverse a LinkedList (Iterative)",d:"easy",lc:"206",gfg:"",tuf:"https://takeuforward.org/data-structures/reverse-a-linked-list/"},
+{id:"p152",n:"Reverse a LinkedList (Recursive)",d:"easy",lc:"206",gfg:"",tuf:"https://takeuforward.org/data-structures/reverse-a-linked-list/"},
+{id:"p153",n:"Detect a Loop in LL",d:"medium",lc:"141",gfg:"",tuf:"https://takeuforward.org/data-structures/detect-a-cycle-in-a-linked-list/"},
+{id:"p154",n:"Find the Starting Point of the Loop",d:"medium",lc:"142",gfg:"",tuf:"https://takeuforward.org/data-structures/starting-point-of-loop-in-a-linked-list/"},
+{id:"p155",n:"Length of Loop in LL",d:"medium",lc:"",gfg:"find-length-of-loop",tuf:"https://takeuforward.org/linked-list/length-of-loop-in-linked-list/"},
+{id:"p156",n:"Check if LL is Palindrome or Not",d:"medium",lc:"234",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-linked-list-is-palindrome/"},
+{id:"p157",n:"Segregate Odd and Even Nodes",d:"medium",lc:"328",gfg:"",tuf:"https://takeuforward.org/data-structures/odd-even-linked-list/"},
+{id:"p158",n:"Remove Nth Node from the Back",d:"medium",lc:"19",gfg:"",tuf:"https://takeuforward.org/data-structures/remove-nth-node-from-the-back-of-the-linked-list/"},
+{id:"p159",n:"Delete the Middle Node of LL",d:"medium",lc:"2095",gfg:"",tuf:"https://takeuforward.org/data-structures/delete-the-middle-node-of-the-linked-list/"},
+{id:"p160",n:"Sort LL",d:"medium",lc:"148",gfg:"",tuf:"https://takeuforward.org/data-structures/sort-linked-list-using-merge-sort/"},
+{id:"p161",n:"Sort a LL of 0s, 1s and 2s",d:"easy",lc:"",gfg:"given-a-linked-list-of-0s-1s-and-2s-sort-it",tuf:"https://takeuforward.org/data-structures/sort-linked-list-of-0s-1s-2s/"},
+{id:"p162",n:"Find the Intersection Point of Two LL",d:"medium",lc:"160",gfg:"",tuf:"https://takeuforward.org/data-structures/find-intersection-of-two-linked-lists/"},
+{id:"p163",n:"Add 1 to a Number Represented by LL",d:"medium",lc:"",gfg:"add-1-to-a-number-represented-as-linked-list",tuf:"https://takeuforward.org/data-structures/add-1-to-a-number-represented-as-linked-list/"},
+{id:"p164",n:"Add Two Numbers in LL",d:"medium",lc:"2",gfg:"",tuf:"https://takeuforward.org/data-structures/add-two-numbers-represented-as-linked-lists/"}
+]},
+{t:"6.3 — Hard",probs:[
+{id:"p165",n:"Reverse LL in Group of Given Size K",d:"hard",lc:"25",gfg:"",tuf:"https://takeuforward.org/data-structures/reverse-linked-list-in-groups-of-size-k/"},
+{id:"p166",n:"Rotate a LL",d:"medium",lc:"61",gfg:"",tuf:"https://takeuforward.org/data-structures/rotate-a-linked-list/"},
+{id:"p167",n:"Flattening of a LL",d:"hard",lc:"",gfg:"flattening-a-linked-list",tuf:"https://takeuforward.org/data-structures/flattening-a-linked-list/"},
+{id:"p168",n:"Copy List with Random Pointer",d:"medium",lc:"138",gfg:"",tuf:"https://takeuforward.org/data-structures/clone-linked-list-with-random-and-next-pointer/"}
+]},
+{t:"6.4 — Doubly Linked List",probs:[
+{id:"p169",n:"Introduction to DLL",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/introduction-to-doubly-linked-list/"},
+{id:"p170",n:"Insert a Node in DLL",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/insert-a-node-in-doubly-linked-list/"},
+{id:"p171",n:"Delete a Node in DLL",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/delete-a-node-in-doubly-linked-list/"},
+{id:"p172",n:"Reverse a DLL",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/reverse-a-doubly-linked-list/"}
+]}
+]},
+{step:7,title:"Recursion",topics:[
+{t:"7.1 — Get a Strong Hold",probs:[
+{id:"p173",n:"Recursive Implementation of atoi()",d:"medium",lc:"8",gfg:"",tuf:"https://takeuforward.org/recursion/recursive-implementation-of-atoi/"},
+{id:"p174",n:"Pow(x, n)",d:"medium",lc:"50",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-powxn-x-raised-to-the-power-n/"},
+{id:"p175",n:"Count Good Numbers",d:"medium",lc:"1922",gfg:"",tuf:"https://takeuforward.org/data-structures/count-good-numbers/"},
+{id:"p176",n:"Sort a Stack",d:"medium",lc:"",gfg:"sort-a-stack",tuf:"https://takeuforward.org/data-structures/sort-a-stack/"},
+{id:"p177",n:"Reverse a Stack",d:"medium",lc:"",gfg:"reverse-a-stack",tuf:"https://takeuforward.org/data-structures/reverse-a-stack-using-recursion/"},
+{id:"p178",n:"Generate All Binary Strings Without Consecutive 1s",d:"medium",lc:"",gfg:"generate-all-binary-strings-without-consecutive-1s",tuf:"https://takeuforward.org/recursion/generate-binary-strings-without-consecutive-1s/"}
+]},
+{t:"7.2 — Subsequences / Subsets",probs:[
+{id:"p179",n:"Generate All Parentheses",d:"medium",lc:"22",gfg:"",tuf:"https://takeuforward.org/data-structures/generate-parentheses/"},
+{id:"p180",n:"Print All Subsequences / Subsets",d:"easy",lc:"78",gfg:"",tuf:"https://takeuforward.org/data-structures/power-set-print-all-the-subsequences-subsets-of-a-string/"},
+{id:"p181",n:"Print Subsequence whose Sum Equals K",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/print-all-subsequences-with-a-given-sum/"},
+{id:"p182",n:"Check if there Exists a Subsequence with Sum K",d:"medium",lc:"",gfg:"subset-sum-problem",tuf:"https://takeuforward.org/data-structures/check-if-there-exists-a-subsequence-with-sum-k/"},
+{id:"p183",n:"Combination Sum 1",d:"medium",lc:"39",gfg:"",tuf:"https://takeuforward.org/data-structures/combination-sum-1/"},
+{id:"p184",n:"Combination Sum 2",d:"medium",lc:"40",gfg:"",tuf:"https://takeuforward.org/data-structures/combination-sum-ii-find-all-unique-combinations/"},
+{id:"p185",n:"Subset Sum I",d:"easy",lc:"",gfg:"subset-sums",tuf:"https://takeuforward.org/data-structures/subset-sum-sum-of-all-subsets/"},
+{id:"p186",n:"Subset Sum II",d:"medium",lc:"90",gfg:"",tuf:"https://takeuforward.org/data-structures/subset-ii-print-all-the-unique-subsets/"},
+{id:"p187",n:"Combination Sum III",d:"medium",lc:"216",gfg:"",tuf:"https://takeuforward.org/data-structures/combination-sum-iii/"}
+]},
+{t:"7.3 — Trying Out All Combos / Hard",probs:[
+{id:"p188",n:"Word Search",d:"medium",lc:"79",gfg:"",tuf:"https://takeuforward.org/data-structures/word-search-leetcode/"},
+{id:"p189",n:"N-Queen Problem",d:"hard",lc:"51",gfg:"",tuf:"https://takeuforward.org/data-structures/n-queen-problem-return-all-distinct-solutions-to-the-n-queens-puzzle/"},
+{id:"p190",n:"Rat in a Maze",d:"hard",lc:"",gfg:"rat-in-a-maze-problem",tuf:"https://takeuforward.org/data-structures/rat-in-a-maze/"},
+{id:"p191",n:"Word Break",d:"medium",lc:"140",gfg:"",tuf:"https://takeuforward.org/data-structures/word-break-ii/"},
+{id:"p192",n:"M-Coloring Problem",d:"medium",lc:"",gfg:"m-coloring-problem",tuf:"https://takeuforward.org/data-structures/m-coloring-problem/"},
+{id:"p193",n:"Sudoku Solver",d:"hard",lc:"37",gfg:"",tuf:"https://takeuforward.org/data-structures/sudoku-solver/"},
+{id:"p194",n:"Expression Add Operators",d:"hard",lc:"282",gfg:"",tuf:"https://takeuforward.org/recursion/expression-add-operators/"},
+{id:"p195",n:"Palindrome Partitioning",d:"medium",lc:"131",gfg:"",tuf:"https://takeuforward.org/data-structures/palindrome-partitioning/"}
+]}
+]},
+{step:8,title:"Bit Manipulation",topics:[
+{t:"8.1 — Learn Basics",probs:[
+{id:"p196",n:"Introduction to Bit Manipulation [Theory]",d:"easy",lc:"",gfg:"bit-manipulation",tuf:"https://takeuforward.org/data-structures/bit-manipulation-course/"},
+{id:"p197",n:"Check if ith Bit is Set or Not",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-kth-bit-is-set-or-not/"},
+{id:"p198",n:"Check if a Number is Odd or Not",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/bit-manipulation/check-if-a-number-is-odd-or-even-using-bit-manipulation/"},
+{id:"p199",n:"Check if a Number is Power of 2",d:"easy",lc:"231",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-n-is-a-power-of-2-or-not/"},
+{id:"p200",n:"Count Number of Set Bits",d:"easy",lc:"191",gfg:"",tuf:"https://takeuforward.org/data-structures/count-number-of-set-bits/"},
+{id:"p201",n:"Set / Unset the Rightmost Unset Bit",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/bit-manipulation/set-unset-rightmost-unset-bit/"},
+{id:"p202",n:"Swap Two Numbers",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/bit-manipulation/swap-two-numbers/"},
+{id:"p203",n:"Divide Two Integers without Division Operator",d:"medium",lc:"29",gfg:"",tuf:"https://takeuforward.org/data-structures/divide-two-integers-without-using-multiplication-division-and-mod-operator/"},
+{id:"p204",n:"Hamming Distance",d:"easy",lc:"461",gfg:"",tuf:"https://takeuforward.org/bit-manipulation/hamming-distance/"}
+]},
+{t:"8.2 — Interview Problems",probs:[
+{id:"p205",n:"Count Total Set Bits from 1 to N",d:"medium",lc:"",gfg:"count-total-set-bits",tuf:"https://takeuforward.org/data-structures/count-total-set-bits/"},
+{id:"p206",n:"Find the Element that Appears Once (Others Twice)",d:"easy",lc:"",gfg:"find-the-element-that-appears-once-in-sorted-array",tuf:"https://takeuforward.org/data-structures/find-the-element-that-appears-once-and-the-other-numbers-twice/"},
+{id:"p207",n:"Power Set using Bit Masking",d:"medium",lc:"78",gfg:"",tuf:"https://takeuforward.org/data-structures/power-set-print-all-the-subsequences-subsets-of-a-string/"},
+{id:"p208",n:"Find XOR of Numbers from L to R",d:"medium",lc:"",gfg:"find-xor-of-numbers-from-l-to-r",tuf:"https://takeuforward.org/data-structures/find-xor-of-numbers-from-l-to-r/"},
+{id:"p209",n:"Find Two Non-Repeating Elements",d:"hard",lc:"260",gfg:"",tuf:"https://takeuforward.org/data-structures/two-numbers-with-odd-occurrences/"},
+{id:"p210",n:"XOR Queries of a Subarray",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/xor-queries-of-a-subarray/"}
+]},
+{t:"8.3 — Advanced Maths",probs:[
+{id:"p211",n:"Print Prime Factors of a Number",d:"medium",lc:"",gfg:"prime-factors5052",tuf:"https://takeuforward.org/data-structures/print-prime-factors-of-a-number/"},
+{id:"p212",n:"All Divisors of a Number",d:"easy",lc:"",gfg:"sum-of-all-divisors",tuf:"https://takeuforward.org/data-structures/print-all-divisors-of-a-given-number/"},
+{id:"p213",n:"Sieve of Eratosthenes",d:"medium",lc:"",gfg:"sieve-of-eratosthenes",tuf:"https://takeuforward.org/data-structures/sieve-of-eratosthenes/"},
+{id:"p214",n:"Find Prime Factorisation using Sieve",d:"hard",lc:"",gfg:"prime-factorisation-using-sieve",tuf:"https://takeuforward.org/data-structures/find-prime-factors-using-sieve-of-eratosthenes/"},
+{id:"p215",n:"Power(n, m) mod p",d:"medium",lc:"50",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-powxn-x-raised-to-the-power-n/"}
+]}
+]},
+{step:9,title:"Stack and Queues",topics:[
+{t:"9.1 — Learn Basics",probs:[
+{id:"p216",n:"Implement Stack using Arrays",d:"easy",lc:"",gfg:"implement-stack-using-array",tuf:"https://takeuforward.org/data-structures/implement-stack-using-array/"},
+{id:"p217",n:"Implement Queue using Arrays",d:"easy",lc:"",gfg:"implement-queue-using-array",tuf:"https://takeuforward.org/data-structures/implement-queue-using-array/"},
+{id:"p218",n:"Implement Stack using Queue",d:"easy",lc:"225",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-stack-using-a-single-queue/"},
+{id:"p219",n:"Implement Queue using Stack",d:"easy",lc:"232",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-queue-using-stack/"},
+{id:"p220",n:"Implement Stack using Linked List",d:"easy",lc:"",gfg:"implement-stack-using-linked-list",tuf:"https://takeuforward.org/data-structures/implement-stack-using-linked-list/"},
+{id:"p221",n:"Implement Queue using Linked List",d:"easy",lc:"",gfg:"implement-queue-using-linked-list",tuf:"https://takeuforward.org/data-structures/implement-queue-using-linked-list/"},
+{id:"p222",n:"Check for Balanced Parentheses",d:"easy",lc:"20",gfg:"",tuf:"https://takeuforward.org/data-structures/check-for-balanced-parentheses/"},
+{id:"p223",n:"Min Stack",d:"medium",lc:"155",gfg:"",tuf:"https://takeuforward.org/data-structures/implement-min-stack-o2-n-and-on-space-complexity/"}
+]},
+{t:"9.2 — Prefix, Infix, Postfix Conversions",probs:[
+{id:"p224",n:"Infix to Postfix",d:"medium",lc:"",gfg:"infix-to-postfix-1587115620",tuf:"https://takeuforward.org/data-structures/infix-to-postfix-conversion/"},
+{id:"p225",n:"Prefix to Infix",d:"medium",lc:"",gfg:"prefix-to-infix-conversion",tuf:"https://takeuforward.org/data-structures/prefix-to-infix-conversion/"},
+{id:"p226",n:"Prefix to Postfix",d:"medium",lc:"",gfg:"prefix-to-postfix-conversion",tuf:"https://takeuforward.org/data-structures/prefix-to-postfix-conversion/"},
+{id:"p227",n:"Postfix to Prefix",d:"medium",lc:"",gfg:"postfix-to-prefix-conversion",tuf:"https://takeuforward.org/data-structures/postfix-to-prefix-conversion/"},
+{id:"p228",n:"Postfix to Infix",d:"medium",lc:"",gfg:"postfix-to-infix-conversion",tuf:"https://takeuforward.org/data-structures/postfix-to-infix-conversion/"},
+{id:"p229",n:"Infix to Prefix",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/infix-to-prefix-conversion/"}
+]},
+{t:"9.3 — Monotonic Stack / Queue",probs:[
+{id:"p230",n:"Next Greater Element I",d:"easy",lc:"496",gfg:"",tuf:"https://takeuforward.org/data-structures/next-greater-element-using-stack/"},
+{id:"p231",n:"Next Greater Element II (Circular)",d:"medium",lc:"503",gfg:"",tuf:"https://takeuforward.org/data-structures/next-greater-element-ii/"},
+{id:"p232",n:"Next Smaller Element",d:"medium",lc:"",gfg:"next-smaller-element",tuf:"https://takeuforward.org/data-structures/next-smaller-element/"},
+{id:"p233",n:"Number of NGEs to the Right",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/number-of-nges-to-the-right/"},
+{id:"p234",n:"Trapping Rainwater",d:"hard",lc:"42",gfg:"",tuf:"https://takeuforward.org/data-structures/trapping-rainwater/"},
+{id:"p235",n:"Sum of Subarray Minimums",d:"hard",lc:"907",gfg:"",tuf:"https://takeuforward.org/data-structures/sum-of-subarray-minimums/"},
+{id:"p236",n:"Asteroid Collision",d:"medium",lc:"735",gfg:"",tuf:"https://takeuforward.org/data-structures/asteroid-collision/"},
+{id:"p237",n:"Sum of Subarray Ranges",d:"medium",lc:"2104",gfg:"",tuf:"https://takeuforward.org/data-structures/sum-of-subarray-ranges/"},
+{id:"p238",n:"Remove K Digits",d:"medium",lc:"402",gfg:"",tuf:"https://takeuforward.org/data-structures/remove-k-digits/"},
+{id:"p239",n:"Largest Rectangle in Histogram",d:"hard",lc:"84",gfg:"",tuf:"https://takeuforward.org/data-structures/area-of-largest-rectangle-in-histogram/"},
+{id:"p240",n:"Maximal Rectangle",d:"hard",lc:"85",gfg:"",tuf:"https://takeuforward.org/data-structures/maximal-rectangles/"},
+{id:"p241",n:"Sliding Window Maximum",d:"hard",lc:"239",gfg:"",tuf:"https://takeuforward.org/data-structures/sliding-window-maximum/"},
+{id:"p242",n:"Stock Span Problem",d:"medium",lc:"",gfg:"stock-span-problem-1587115621",tuf:"https://takeuforward.org/data-structures/stock-span-problem/"},
+{id:"p243",n:"The Celebrity Problem",d:"medium",lc:"",gfg:"the-celebrity-problem",tuf:"https://takeuforward.org/data-structures/the-celebrity-problem/"},
+{id:"p244",n:"LRU Cache",d:"hard",lc:"146",gfg:"",tuf:"https://takeuforward.org/data-structures/lru-cache-implementation/"},
+{id:"p245",n:"LFU Cache",d:"hard",lc:"460",gfg:"",tuf:"https://takeuforward.org/data-structures/lfu-cache-implementation/"}
+]}
+]},
+{step:10,title:"Sliding Window & Two Pointer",topics:[
+{t:"10.1 — Medium",probs:[
+{id:"p246",n:"Longest Subarray with Sum K (Positives)",d:"medium",lc:"",gfg:"longest-sub-array-with-sum-k0809",tuf:"https://takeuforward.org/data-structures/longest-subarray-with-sum-k/"},
+{id:"p247",n:"Longest Substring with K Unique Characters",d:"medium",lc:"340",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-substring-with-k-unique-characters/"},
+{id:"p248",n:"Longest Substring with All 3 Chars a, b, c",d:"medium",lc:"1358",gfg:"",tuf:"https://takeuforward.org/data-structures/number-of-substrings-containing-all-three-characters/"},
+{id:"p249",n:"Max Points You Can Obtain from Cards",d:"medium",lc:"1423",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-points-you-can-obtain-from-cards/"},
+{id:"p250",n:"Longest Substring Without Repeating Characters",d:"medium",lc:"3",gfg:"",tuf:"https://takeuforward.org/data-structures/length-of-longest-substring-without-any-repeating-character/"},
+{id:"p251",n:"Max Consecutive Ones III",d:"medium",lc:"1004",gfg:"",tuf:"https://takeuforward.org/data-structures/count-maximum-consecutive-ones-in-the-array/"},
+{id:"p252",n:"Fruit Into Baskets",d:"medium",lc:"904",gfg:"",tuf:"https://takeuforward.org/data-structures/fruit-into-baskets/"}
+]},
+{t:"10.2 — Hard",probs:[
+{id:"p253",n:"Binary Subarrays With Sum",d:"medium",lc:"930",gfg:"",tuf:"https://takeuforward.org/data-structures/binary-subarrays-with-sum/"},
+{id:"p254",n:"Count Number of Nice Subarrays",d:"medium",lc:"1248",gfg:"",tuf:"https://takeuforward.org/data-structures/count-number-of-nice-subarrays/"},
+{id:"p255",n:"Number of Substrings Containing All Three Characters",d:"medium",lc:"1358",gfg:"",tuf:"https://takeuforward.org/data-structures/number-of-substrings-containing-all-three-characters/"},
+{id:"p256",n:"Number of Substrings with K Distinct",d:"hard",lc:"992",gfg:"",tuf:"https://takeuforward.org/data-structures/subarrays-with-k-different-integers/"},
+{id:"p257",n:"Minimum Window Substring",d:"hard",lc:"76",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-window-substring/"},
+{id:"p258",n:"Minimum Window Subsequence",d:"hard",lc:"727",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-window-subsequence/"}
+]}
+]},
+{step:11,title:"Heaps",topics:[
+{t:"11.1 — Learn",probs:[
+{id:"p259",n:"Introduction to Heaps",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/introduction-to-heaps/"},
+{id:"p260",n:"Min Heap and Max Heap Implementation",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/min-heap-and-max-heap-implementation/"},
+{id:"p261",n:"Check if an Array Represents a Min-Heap or Not",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-an-array-represents-a-min-heap/"},
+{id:"p262",n:"Convert Min Heap to Max Heap",d:"medium",lc:"",gfg:"convert-min-heap-to-max-heap",tuf:"https://takeuforward.org/data-structures/convert-min-heap-to-max-heap/"}
+]},
+{t:"11.2 — Medium",probs:[
+{id:"p263",n:"Kth Largest Element in an Array",d:"medium",lc:"215",gfg:"",tuf:"https://takeuforward.org/data-structures/kth-largest-smallest-element-in-an-array/"},
+{id:"p264",n:"Kth Smallest Element",d:"medium",lc:"",gfg:"kth-smallest-element",tuf:"https://takeuforward.org/data-structures/kth-largest-smallest-element-in-an-array/"},
+{id:"p265",n:"Sort K Sorted Array",d:"medium",lc:"",gfg:"k-th-smallest-in-a-unsorted-array",tuf:"https://takeuforward.org/data-structures/nearly-sorted-algorithm/"},
+{id:"p266",n:"Merge M Sorted Lists",d:"hard",lc:"23",gfg:"",tuf:"https://takeuforward.org/data-structures/merge-k-sorted-lists/"},
+{id:"p267",n:"Replace Each Array Element by its Corresponding Rank",d:"medium",lc:"",gfg:"replace-elements-by-its-rank-in-the-array",tuf:"https://takeuforward.org/data-structures/replace-elements-by-its-rank-in-the-array/"},
+{id:"p268",n:"Task Scheduler",d:"medium",lc:"621",gfg:"",tuf:"https://takeuforward.org/data-structures/task-scheduler/"},
+{id:"p269",n:"Hands of Straights",d:"medium",lc:"846",gfg:"",tuf:"https://takeuforward.org/data-structures/hand-of-straights/"},
+{id:"p270",n:"Design Twitter",d:"hard",lc:"355",gfg:"",tuf:"https://takeuforward.org/data-structures/design-twitter/"}
+]},
+{t:"11.3 — Hard",probs:[
+{id:"p271",n:"Connect N Ropes with Minimum Cost",d:"medium",lc:"",gfg:"connect-n-ropes-with-minimum-cost",tuf:"https://takeuforward.org/data-structures/connect-n-ropes-with-minimum-cost/"},
+{id:"p272",n:"Kth Largest Element in a Stream",d:"medium",lc:"703",gfg:"",tuf:"https://takeuforward.org/data-structures/kth-largest-element-in-a-stream/"},
+{id:"p273",n:"Maximum Sum Combination",d:"medium",lc:"",gfg:"maximum-sum-combination",tuf:"https://takeuforward.org/data-structures/maximum-sum-combination/"},
+{id:"p274",n:"Find Median from Data Stream",d:"hard",lc:"295",gfg:"",tuf:"https://takeuforward.org/data-structures/find-median-from-a-data-stream/"},
+{id:"p275",n:"K Most Frequent Elements",d:"medium",lc:"347",gfg:"",tuf:"https://takeuforward.org/data-structures/top-k-frequent-elements/"},
+{id:"p276",n:"Top K Frequent Words",d:"medium",lc:"692",gfg:"",tuf:"https://takeuforward.org/data-structures/top-k-frequent-words/"}
+]}
+]},
+{step:12,title:"Greedy Algorithms",topics:[
+{t:"12.1 — Easy",probs:[
+{id:"p277",n:"Assign Cookies",d:"easy",lc:"455",gfg:"",tuf:"https://takeuforward.org/greedy/assign-cookies/"},
+{id:"p278",n:"Fractional Knapsack Problem",d:"medium",lc:"",gfg:"fractional-knapsack-1587115620",tuf:"https://takeuforward.org/data-structures/fractional-knapsack-problem-greedy-approach/"},
+{id:"p279",n:"Greedy Algorithm to Find Minimum Number of Coins",d:"easy",lc:"",gfg:"number-of-coins1824",tuf:"https://takeuforward.org/data-structures/find-minimum-number-of-coins/"},
+{id:"p280",n:"Lemonade Change",d:"easy",lc:"860",gfg:"",tuf:"https://takeuforward.org/greedy/lemonade-change/"},
+{id:"p281",n:"Valid Parenthesis String",d:"medium",lc:"678",gfg:"",tuf:"https://takeuforward.org/data-structures/valid-parenthesis-string/"}
+]},
+{t:"12.2 — Medium / Hard",probs:[
+{id:"p282",n:"N Meetings in One Room",d:"easy",lc:"",gfg:"n-meetings-in-one-room",tuf:"https://takeuforward.org/data-structures/n-meetings-in-one-room/"},
+{id:"p283",n:"Jump Game I",d:"medium",lc:"55",gfg:"",tuf:"https://takeuforward.org/data-structures/jump-game/"},
+{id:"p284",n:"Jump Game II",d:"medium",lc:"45",gfg:"",tuf:"https://takeuforward.org/data-structures/jump-game-2/"},
+{id:"p285",n:"Minimum Number of Platforms Required",d:"medium",lc:"",gfg:"minimum-platforms-1587115620",tuf:"https://takeuforward.org/data-structures/minimum-number-of-platforms-required-for-a-railway-station/"},
+{id:"p286",n:"Job Sequencing Problem",d:"medium",lc:"",gfg:"job-sequencing-problem-1587115621",tuf:"https://takeuforward.org/data-structures/job-sequencing-problem/"},
+{id:"p287",n:"Candy",d:"hard",lc:"135",gfg:"",tuf:"https://takeuforward.org/data-structures/candy-leetcode-135-interview-problems/"},
+{id:"p288",n:"Program for Shortest Job First (SJF)",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/operating-systems/shortest-job-first-sjf-cpu-scheduling-algorithm/"},
+{id:"p289",n:"Page Faults in LRU",d:"hard",lc:"",gfg:"page-faults-in-lru",tuf:"https://takeuforward.org/operating-systems/page-replacement-algorithms-lru-fifo-optimal/"},
+{id:"p290",n:"Insert Interval",d:"medium",lc:"57",gfg:"",tuf:"https://takeuforward.org/data-structures/insert-new-interval-in-intervals/"},
+{id:"p291",n:"Non-overlapping Intervals",d:"medium",lc:"435",gfg:"",tuf:"https://takeuforward.org/data-structures/non-overlapping-intervals/"}
+]}
+]},
+{step:13,title:"Binary Trees",topics:[
+{t:"13.1 — Traversals",probs:[
+{id:"p292",n:"Introduction to Trees",d:"easy",lc:"",gfg:"introduction-to-binary-tree",tuf:"https://takeuforward.org/data-structures/introduction-to-trees/"},
+{id:"p293",n:"BFS / Level Order Traversal",d:"easy",lc:"102",gfg:"",tuf:"https://takeuforward.org/data-structures/level-order-traversal/"},
+{id:"p294",n:"DFS (Pre/In/Post) Recursive",d:"easy",lc:"144",gfg:"",tuf:"https://takeuforward.org/data-structures/all-traversals-of-binary-tree-dfs/"},
+{id:"p295",n:"Iterative Preorder",d:"easy",lc:"144",gfg:"",tuf:"https://takeuforward.org/data-structures/pre-order-traversal-of-binary-tree/"},
+{id:"p296",n:"Iterative Inorder",d:"easy",lc:"94",gfg:"",tuf:"https://takeuforward.org/data-structures/inorder-traversal-of-binary-tree/"},
+{id:"p297",n:"Iterative Postorder (2 Stacks)",d:"medium",lc:"145",gfg:"",tuf:"https://takeuforward.org/data-structures/post-order-traversal-of-binary-tree/"},
+{id:"p298",n:"Iterative Postorder (1 Stack)",d:"hard",lc:"145",gfg:"",tuf:"https://takeuforward.org/data-structures/post-order-traversal-of-binary-tree/"},
+{id:"p299",n:"All in One Traversal",d:"hard",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/morris-inorder-traversal-of-a-binary-tree/"}
+]},
+{t:"13.2 — Medium",probs:[
+{id:"p300",n:"Height of a Binary Tree",d:"easy",lc:"104",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-depth-of-a-binary-tree/"},
+{id:"p301",n:"Check if the Binary Tree is Height-Balanced",d:"medium",lc:"110",gfg:"",tuf:"https://takeuforward.org/data-structures/balanced-binary-tree/"},
+{id:"p302",n:"Diameter of Binary Tree",d:"easy",lc:"543",gfg:"",tuf:"https://takeuforward.org/data-structures/diameter-of-binary-tree/"},
+{id:"p303",n:"Maximum Path Sum",d:"hard",lc:"124",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-sum-path-in-binary-tree/"},
+{id:"p304",n:"Check if Two Trees are Identical",d:"easy",lc:"100",gfg:"",tuf:"https://takeuforward.org/data-structures/check-if-two-trees-are-identical/"},
+{id:"p305",n:"Zigzag / Spiral-order Traversal",d:"medium",lc:"103",gfg:"",tuf:"https://takeuforward.org/data-structures/zig-zag-traversal-of-binary-tree/"},
+{id:"p306",n:"Boundary Traversal",d:"medium",lc:"",gfg:"boundary-traversal-of-binary-tree",tuf:"https://takeuforward.org/data-structures/boundary-traversal-of-a-binary-tree/"},
+{id:"p307",n:"Vertical Order Traversal",d:"hard",lc:"987",gfg:"",tuf:"https://takeuforward.org/data-structures/vertical-order-traversal-of-binary-tree/"},
+{id:"p308",n:"Top View of Binary Tree",d:"medium",lc:"",gfg:"top-view-of-binary-tree",tuf:"https://takeuforward.org/data-structures/top-view-of-a-binary-tree/"},
+{id:"p309",n:"Bottom View of Binary Tree",d:"medium",lc:"",gfg:"bottom-view-of-binary-tree",tuf:"https://takeuforward.org/data-structures/bottom-view-of-a-binary-tree/"},
+{id:"p310",n:"Right / Left View of Binary Tree",d:"medium",lc:"199",gfg:"",tuf:"https://takeuforward.org/data-structures/right-left-view-of-binary-tree/"},
+{id:"p311",n:"Symmetric Binary Tree",d:"easy",lc:"101",gfg:"",tuf:"https://takeuforward.org/data-structures/check-for-symmetrical-binary-tree/"},
+{id:"p312",n:"Print Root to Node Path",d:"medium",lc:"",gfg:"root-to-leaf-path",tuf:"https://takeuforward.org/data-structures/print-root-to-node-path-in-a-binary-tree/"},
+{id:"p313",n:"LCA in Binary Tree",d:"medium",lc:"236",gfg:"",tuf:"https://takeuforward.org/data-structures/lca-in-a-binary-tree/"},
+{id:"p314",n:"Maximum Width of Binary Tree",d:"medium",lc:"662",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-width-of-binary-tree/"},
+{id:"p315",n:"Children Sum Property",d:"medium",lc:"",gfg:"children-sum-parent",tuf:"https://takeuforward.org/data-structures/children-sum-property-in-a-binary-tree/"},
+{id:"p316",n:"All Nodes at Distance K",d:"medium",lc:"863",gfg:"",tuf:"https://takeuforward.org/data-structures/print-all-nodes-at-a-distance-of-k-from-given-node/"},
+{id:"p317",n:"Minimum Time to Burn the Binary Tree",d:"hard",lc:"",gfg:"burning-tree",tuf:"https://takeuforward.org/data-structures/time-to-burn-a-binary-tree-from-a-node/"},
+{id:"p318",n:"Count Total Nodes in a Complete Binary Tree",d:"medium",lc:"222",gfg:"",tuf:"https://takeuforward.org/data-structures/count-total-nodes-in-a-complete-binary-tree/"}
+]},
+{t:"13.3 — Hard",probs:[
+{id:"p319",n:"Requirements to Construct a Unique Binary Tree",d:"hard",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/construct-a-binary-tree-from-inorder-and-preorder/"},
+{id:"p320",n:"Construct Binary Tree from Preorder and Inorder",d:"medium",lc:"105",gfg:"",tuf:"https://takeuforward.org/data-structures/construct-binary-tree-from-inorder-and-preorder-traversal/"},
+{id:"p321",n:"Construct Binary Tree from Postorder and Inorder",d:"medium",lc:"106",gfg:"",tuf:"https://takeuforward.org/data-structures/construct-binary-tree-from-inorder-and-postorder/"},
+{id:"p322",n:"Serialize and Deserialize Binary Tree",d:"hard",lc:"297",gfg:"",tuf:"https://takeuforward.org/data-structures/serialize-and-deserialize-a-binary-tree/"},
+{id:"p323",n:"Morris Preorder Traversal",d:"hard",lc:"",gfg:"morris-traversal",tuf:"https://takeuforward.org/data-structures/morris-preorder-traversal-of-a-binary-tree/"},
+{id:"p324",n:"Morris Inorder Traversal",d:"hard",lc:"94",gfg:"",tuf:"https://takeuforward.org/data-structures/morris-inorder-traversal-of-a-binary-tree/"},
+{id:"p325",n:"Flatten Binary Tree to Linked List",d:"medium",lc:"114",gfg:"",tuf:"https://takeuforward.org/data-structures/flatten-binary-tree-to-linked-list/"}
+]}
+]},
+{step:14,title:"Binary Search Trees",topics:[
+{t:"14.1 — Concepts",probs:[
+{id:"p326",n:"Introduction to BST",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/introduction-to-binary-search-tree/"},
+{id:"p327",n:"Search in a BST",d:"easy",lc:"700",gfg:"",tuf:"https://takeuforward.org/data-structures/search-in-a-binary-search-tree/"},
+{id:"p328",n:"Find Min / Max in BST",d:"easy",lc:"",gfg:"ceil-the-floor",tuf:"https://takeuforward.org/data-structures/introduction-to-binary-search-tree/"},
+{id:"p329",n:"Ceil in BST",d:"medium",lc:"",gfg:"ceil-from-bst",tuf:"https://takeuforward.org/data-structures/ceil-from-bst/"},
+{id:"p330",n:"Floor in BST",d:"medium",lc:"",gfg:"floor-in-bst",tuf:"https://takeuforward.org/data-structures/floor-in-a-binary-search-tree/"},
+{id:"p331",n:"Insert a Node in BST",d:"easy",lc:"701",gfg:"",tuf:"https://takeuforward.org/data-structures/insert-a-node-in-binary-search-tree/"},
+{id:"p332",n:"Delete a Node in BST",d:"medium",lc:"450",gfg:"",tuf:"https://takeuforward.org/data-structures/delete-a-node-in-binary-search-tree/"},
+{id:"p333",n:"Find Kth Smallest / Largest Element in BST",d:"medium",lc:"230",gfg:"",tuf:"https://takeuforward.org/data-structures/kth-largest-smallest-element-in-bst/"},
+{id:"p334",n:"Check if a Tree is BST or BT",d:"medium",lc:"98",gfg:"",tuf:"https://takeuforward.org/data-structures/check-whether-a-binary-tree-is-bst-or-not/"},
+{id:"p335",n:"LCA in BST",d:"medium",lc:"235",gfg:"",tuf:"https://takeuforward.org/data-structures/lca-in-binary-search-tree/"},
+{id:"p336",n:"Construct a BST from a Preorder Traversal",d:"medium",lc:"1008",gfg:"",tuf:"https://takeuforward.org/data-structures/construct-a-bst-from-a-preorder-traversal/"},
+{id:"p337",n:"Inorder Successor / Predecessor in BST",d:"medium",lc:"",gfg:"inorder-successor-in-bst",tuf:"https://takeuforward.org/data-structures/inorder-successor-predecessor-in-bst/"},
+{id:"p338",n:"BST Iterator",d:"medium",lc:"173",gfg:"",tuf:"https://takeuforward.org/data-structures/binary-search-tree-iterator/"},
+{id:"p339",n:"Two Sum in BST",d:"medium",lc:"653",gfg:"",tuf:"https://takeuforward.org/data-structures/two-sum-in-bst-check-if-there-exists-a-pair-with-sum-k/"},
+{id:"p340",n:"Recover BST | Correct BST with Two Nodes Swapped",d:"hard",lc:"99",gfg:"",tuf:"https://takeuforward.org/data-structures/recover-the-binary-search-tree/"},
+{id:"p341",n:"Largest BST in Binary Tree",d:"hard",lc:"",gfg:"largest-bst",tuf:"https://takeuforward.org/data-structures/largest-bst-in-binary-tree/"}
+]}
+]},
+{step:15,title:"Graphs",topics:[
+{t:"15.1 — BFS / DFS",probs:[
+{id:"p342",n:"Graph and Vertices",d:"easy",lc:"",gfg:"graph-and-vertices",tuf:"https://takeuforward.org/graph/introduction-to-graph/"},
+{id:"p343",n:"Graph Representation (Adjacency Matrix + List)",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/graph/graph-representation-in-c/"},
+{id:"p344",n:"Connected Components Logic",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/graph/connected-components-in-graphs/"},
+{id:"p345",n:"BFS (Breadth First Search)",d:"easy",lc:"",gfg:"bfs-traversal-of-graph",tuf:"https://takeuforward.org/graph/breadth-first-search-bfs-level-order-traversal/"},
+{id:"p346",n:"DFS (Depth First Search)",d:"easy",lc:"",gfg:"depth-first-traversal-for-a-graph",tuf:"https://takeuforward.org/graph/depth-first-search-dfs/"},
+{id:"p347",n:"Number of Provinces",d:"medium",lc:"547",gfg:"",tuf:"https://takeuforward.org/graph/number-of-provinces/"},
+{id:"p348",n:"Number of Islands",d:"medium",lc:"200",gfg:"",tuf:"https://takeuforward.org/graph/number-of-islands/"},
+{id:"p349",n:"Flood Fill",d:"easy",lc:"733",gfg:"",tuf:"https://takeuforward.org/graph/flood-fill-algorithm/"},
+{id:"p350",n:"Rotten Oranges",d:"medium",lc:"994",gfg:"",tuf:"https://takeuforward.org/graph/rotten-oranges/"},
+{id:"p351",n:"Detect Cycle in Undirected Graph (BFS)",d:"medium",lc:"",gfg:"detect-cycle-in-an-undirected-graph",tuf:"https://takeuforward.org/graph/detect-cycle-in-an-undirected-graph-using-bfs/"},
+{id:"p352",n:"Detect Cycle in Undirected Graph (DFS)",d:"medium",lc:"",gfg:"detect-cycle-in-an-undirected-graph",tuf:"https://takeuforward.org/graph/detect-cycle-in-an-undirected-graph-using-dfs/"},
+{id:"p353",n:"Distance of Nearest Cell Having 1",d:"medium",lc:"542",gfg:"",tuf:"https://takeuforward.org/graph/distance-of-nearest-cell-having-1/"},
+{id:"p354",n:"Surrounded Regions",d:"medium",lc:"130",gfg:"",tuf:"https://takeuforward.org/graph/surrounded-regions-replace-os-with-xs/"},
+{id:"p355",n:"Number of Enclaves",d:"medium",lc:"1020",gfg:"",tuf:"https://takeuforward.org/graph/number-of-enclaves/"},
+{id:"p356",n:"Word Ladder I",d:"hard",lc:"127",gfg:"",tuf:"https://takeuforward.org/graph/word-ladder-i/"},
+{id:"p357",n:"Word Ladder II",d:"hard",lc:"126",gfg:"",tuf:"https://takeuforward.org/graph/word-ladder-ii/"},
+{id:"p358",n:"Number of Distinct Islands",d:"medium",lc:"",gfg:"number-of-distinct-islands",tuf:"https://takeuforward.org/graph/number-of-distinct-islands/"},
+{id:"p359",n:"Bipartite Check (BFS)",d:"medium",lc:"785",gfg:"",tuf:"https://takeuforward.org/graph/bipartite-check-using-bfs/"},
+{id:"p360",n:"Bipartite Check (DFS)",d:"medium",lc:"785",gfg:"",tuf:"https://takeuforward.org/graph/bipartite-check-using-dfs/"}
+]},
+{t:"15.2 — Topo Sort / DAG",probs:[
+{id:"p361",n:"Topological Sort (DFS)",d:"medium",lc:"",gfg:"topological-sort",tuf:"https://takeuforward.org/graph/topological-sort-using-dfs/"},
+{id:"p362",n:"Topological Sort (Kahn's BFS)",d:"medium",lc:"",gfg:"topological-sort",tuf:"https://takeuforward.org/graph/topological-sort-using-kahns-algorithm-bfs/"},
+{id:"p363",n:"Detect Cycle in Directed Graph (Kahn's)",d:"medium",lc:"",gfg:"detect-cycle-in-a-directed-graph",tuf:"https://takeuforward.org/graph/detect-cycle-in-directed-graph-using-kahns-algorithm/"},
+{id:"p364",n:"Detect Cycle in Directed Graph (DFS)",d:"medium",lc:"",gfg:"detect-cycle-in-a-directed-graph",tuf:"https://takeuforward.org/graph/detect-a-cycle-in-directed-graph-using-dfs/"},
+{id:"p365",n:"Course Schedule I",d:"medium",lc:"207",gfg:"",tuf:"https://takeuforward.org/data-structures/course-schedule-i-and-ii/"},
+{id:"p366",n:"Course Schedule II",d:"medium",lc:"210",gfg:"",tuf:"https://takeuforward.org/data-structures/course-schedule-i-and-ii/"},
+{id:"p367",n:"Find Eventual Safe States",d:"medium",lc:"802",gfg:"",tuf:"https://takeuforward.org/graph/find-eventual-safe-states/"},
+{id:"p368",n:"Alien Dictionary",d:"hard",lc:"",gfg:"alien-dictionary",tuf:"https://takeuforward.org/graph/alien-dictionary-topological-sort/"}
+]},
+{t:"15.3 — Shortest Path",probs:[
+{id:"p369",n:"Shortest Path in Undirected Graph with Unit Weights",d:"easy",lc:"",gfg:"shortest-path-in-undirected-graph",tuf:"https://takeuforward.org/graph/shortest-path-in-undirected-graph-with-unit-weights/"},
+{id:"p370",n:"Shortest Path in DAG",d:"medium",lc:"",gfg:"shortest-path-in-directed-acyclic-graph",tuf:"https://takeuforward.org/graph/shortest-path-in-directed-acyclic-graph-topological-sort/"},
+{id:"p371",n:"Dijkstra's Algorithm (Priority Queue)",d:"medium",lc:"",gfg:"dijkstra-algorithm-1587115620",tuf:"https://takeuforward.org/graph/dijkstras-algorithm-using-priority-queue/"},
+{id:"p372",n:"Dijkstra's Algorithm (using Set)",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/graph/dijkstras-algorithm-using-set/"},
+{id:"p373",n:"Bellman Ford Algorithm",d:"medium",lc:"",gfg:"bellman-ford-1587115621",tuf:"https://takeuforward.org/graph/bellman-ford-algorithm/"},
+{id:"p374",n:"Floyd Warshall Algorithm",d:"hard",lc:"",gfg:"implementing-floyd-warshall2042",tuf:"https://takeuforward.org/graph/floyd-warshall-algorithm/"},
+{id:"p375",n:"City with the Smallest Number of Neighbors",d:"medium",lc:"1334",gfg:"",tuf:"https://takeuforward.org/graph/find-the-city-with-the-smallest-number-of-neighbors/"}
+]},
+{t:"15.4 — MST / DSU",probs:[
+{id:"p376",n:"Minimum Spanning Tree",d:"medium",lc:"",gfg:"minimum-spanning-tree",tuf:"https://takeuforward.org/graph/minimum-spanning-tree-prims-algorithm/"},
+{id:"p377",n:"Prim's Algorithm",d:"medium",lc:"",gfg:"prim-s-mst",tuf:"https://takeuforward.org/graph/minimum-spanning-tree-prims-algorithm/"},
+{id:"p378",n:"Disjoint Set [Union by Rank]",d:"medium",lc:"",gfg:"union-by-rank",tuf:"https://takeuforward.org/graph/disjoint-set-union-by-rank-union-by-size-path-compression/"},
+{id:"p379",n:"Disjoint Set [Union by Size]",d:"medium",lc:"",gfg:"",tuf:"https://takeuforward.org/graph/disjoint-set-union-by-rank-union-by-size-path-compression/"},
+{id:"p380",n:"Kruskal's Algorithm",d:"medium",lc:"",gfg:"minimum-spanning-tree",tuf:"https://takeuforward.org/graph/kruskal-s-algorithm-minimum-spanning-tree/"},
+{id:"p381",n:"Number of Operations to Make Network Connected",d:"medium",lc:"1319",gfg:"",tuf:"https://takeuforward.org/graph/number-of-operations-to-make-network-connected/"},
+{id:"p382",n:"Most Stones Removed with Same Row or Column",d:"medium",lc:"947",gfg:"",tuf:"https://takeuforward.org/graph/most-stones-removed-with-same-row-or-column/"},
+{id:"p383",n:"Accounts Merge",d:"hard",lc:"721",gfg:"",tuf:"https://takeuforward.org/data-structures/accounts-merge/"},
+{id:"p384",n:"Number of Islands II",d:"hard",lc:"305",gfg:"",tuf:"https://takeuforward.org/graph/number-of-islands-ii/"},
+{id:"p385",n:"Making a Large Island",d:"hard",lc:"827",gfg:"",tuf:"https://takeuforward.org/graph/making-a-large-island/"},
+{id:"p386",n:"Swim in Rising Water",d:"hard",lc:"778",gfg:"",tuf:"https://takeuforward.org/graph/swim-in-rising-water/"}
+]},
+{t:"15.5 — Other Algorithms",probs:[
+{id:"p387",n:"Bridges in Graph",d:"hard",lc:"1192",gfg:"",tuf:"https://takeuforward.org/graph/bridges-in-graph-using-tarjans-algorithm-of-dfs/"},
+{id:"p388",n:"Articulation Point",d:"hard",lc:"",gfg:"articulation-point",tuf:"https://takeuforward.org/graph/articulation-points-in-graphs-tarjans-algorithm/"},
+{id:"p389",n:"Kosaraju's Algorithm — Strongly Connected Components",d:"hard",lc:"",gfg:"strongly-connected-components-kosarajus-algo",tuf:"https://takeuforward.org/graph/strongly-connected-components-kosarajus-algorithm/"}
+]}
+]},
+{step:16,title:"Dynamic Programming",topics:[
+{t:"16.1 — Introduction",probs:[
+{id:"p390",n:"Dynamic Programming Introduction",d:"easy",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/dynamic-programming-introduction/"},
+{id:"p391",n:"Climbing Stairs",d:"easy",lc:"70",gfg:"",tuf:"https://takeuforward.org/data-structures/climbing-stairs/"},
+{id:"p392",n:"Frog Jump",d:"easy",lc:"",gfg:"geek-jump",tuf:"https://takeuforward.org/data-structures/dp-1-climbing-stairs/"},
+{id:"p393",n:"Frog Jump with K Distances",d:"medium",lc:"",gfg:"minimal-cost",tuf:"https://takeuforward.org/data-structures/dp-on-subsequences/"},
+{id:"p394",n:"Maximum Sum of Non-Adjacent Elements (House Robber)",d:"medium",lc:"198",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-sum-of-non-adjacent-elements-dp-5/"},
+{id:"p395",n:"House Robber II",d:"medium",lc:"213",gfg:"",tuf:"https://takeuforward.org/data-structures/house-robber-2/"}
+]},
+{t:"16.2 — 2D / 3D DP",probs:[
+{id:"p396",n:"Unique Paths",d:"medium",lc:"62",gfg:"",tuf:"https://takeuforward.org/data-structures/grid-unique-paths-dp-on-grids-dp8/"},
+{id:"p397",n:"Unique Paths II (Obstacles)",d:"medium",lc:"63",gfg:"",tuf:"https://takeuforward.org/data-structures/grid-unique-paths-2-dp-9/"},
+{id:"p398",n:"Minimum Path Sum in Grid",d:"medium",lc:"64",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-path-sum-in-a-grid-dp-10/"},
+{id:"p399",n:"Minimum Path Sum in Triangular Grid",d:"medium",lc:"120",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-path-sum-in-triangular-grid-dp-11/"},
+{id:"p400",n:"Minimum / Maximum Falling Path Sum",d:"medium",lc:"931",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-maximum-falling-path-sum-dp-12/"},
+{id:"p401",n:"3D DP — Chocolate Pickup",d:"hard",lc:"1463",gfg:"",tuf:"https://takeuforward.org/data-structures/3-d-dp-ninja-and-his-friends-dp-13/"}
+]},
+{t:"16.3 — DP on Subsequences",probs:[
+{id:"p402",n:"Subset Sum Equal to Target",d:"medium",lc:"",gfg:"subset-sum-problem-1611555638",tuf:"https://takeuforward.org/data-structures/subset-sum-equal-to-target-dp-14/"},
+{id:"p403",n:"Partition Equal Subset Sum",d:"medium",lc:"416",gfg:"",tuf:"https://takeuforward.org/data-structures/partition-equal-subset-sum-dp-15/"},
+{id:"p404",n:"Partition Array Into Two Arrays to Minimize Sum Difference",d:"hard",lc:"2035",gfg:"",tuf:"https://takeuforward.org/data-structures/partition-array-into-two-parts-to-minimize-absolute-difference/"},
+{id:"p405",n:"Count Subsets with Sum K",d:"medium",lc:"",gfg:"perfect-sum-problem-1587115620",tuf:"https://takeuforward.org/data-structures/count-subsets-with-sum-k-dp-17/"},
+{id:"p406",n:"Count Partitions with Given Difference",d:"medium",lc:"",gfg:"partitions-with-given-difference",tuf:"https://takeuforward.org/data-structures/count-partitions-with-given-difference-dp-18/"},
+{id:"p407",n:"0/1 Knapsack Problem",d:"medium",lc:"",gfg:"0-1-knapsack-problem0945",tuf:"https://takeuforward.org/data-structures/0-1-knapsack-dp-19/"},
+{id:"p408",n:"Coin Change (Min Coins)",d:"medium",lc:"322",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-coins-dp-20/"},
+{id:"p409",n:"Target Sum",d:"medium",lc:"494",gfg:"",tuf:"https://takeuforward.org/data-structures/target-sum-dp-21/"},
+{id:"p410",n:"Coin Change II (Count Ways)",d:"medium",lc:"518",gfg:"",tuf:"https://takeuforward.org/data-structures/infinite-supply-problems-dp-23/"},
+{id:"p411",n:"Unbounded Knapsack",d:"medium",lc:"",gfg:"knapsack-with-duplicate-items4545",tuf:"https://takeuforward.org/data-structures/unbounded-knapsack-dp-23/"},
+{id:"p412",n:"Rod Cutting Problem",d:"medium",lc:"",gfg:"rod-cutting0840",tuf:"https://takeuforward.org/data-structures/rod-cutting-problem-dp-24/"}
+]},
+{t:"16.4 — DP on Strings",probs:[
+{id:"p413",n:"Longest Common Subsequence",d:"medium",lc:"1143",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-common-subsequence-dp-25/"},
+{id:"p414",n:"Print LCS",d:"medium",lc:"",gfg:"print-lcs",tuf:"https://takeuforward.org/data-structures/print-longest-common-subsequence-dp-26/"},
+{id:"p415",n:"Longest Common Substring",d:"medium",lc:"",gfg:"longest-common-substring-1587115621",tuf:"https://takeuforward.org/data-structures/longest-common-substring-dp-27/"},
+{id:"p416",n:"Longest Palindromic Subsequence",d:"medium",lc:"516",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-palindromic-subsequence-dp-28/"},
+{id:"p417",n:"Minimum Insertions to Make String Palindrome",d:"hard",lc:"1312",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-insertions-to-make-string-palindrome-dp-29/"},
+{id:"p418",n:"Minimum Deletions to Make String Equal",d:"medium",lc:"583",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-number-of-deletions-and-insertions-dp-30/"},
+{id:"p419",n:"Shortest Common Supersequence",d:"hard",lc:"1092",gfg:"",tuf:"https://takeuforward.org/data-structures/shortest-common-supersequence/"},
+{id:"p420",n:"Distinct Subsequences",d:"hard",lc:"115",gfg:"",tuf:"https://takeuforward.org/data-structures/distinct-subsequences-dp-32/"},
+{id:"p421",n:"Edit Distance",d:"hard",lc:"72",gfg:"",tuf:"https://takeuforward.org/data-structures/edit-distance-dp-33/"},
+{id:"p422",n:"Wildcard Matching",d:"hard",lc:"44",gfg:"",tuf:"https://takeuforward.org/data-structures/wildcard-matching-dp-34/"}
+]},
+{t:"16.5 — DP on Stocks",probs:[
+{id:"p423",n:"Best Time to Buy and Sell Stock",d:"easy",lc:"121",gfg:"",tuf:"https://takeuforward.org/data-structures/stock-buy-and-sell-dp-35/"},
+{id:"p424",n:"Best Time to Buy and Sell Stock II",d:"medium",lc:"122",gfg:"",tuf:"https://takeuforward.org/data-structures/buy-and-sell-stock-dp-36/"},
+{id:"p425",n:"Best Time to Buy and Sell Stock III",d:"hard",lc:"123",gfg:"",tuf:"https://takeuforward.org/data-structures/buy-and-sell-stocks-dp-37/"},
+{id:"p426",n:"Best Time to Buy and Sell Stock IV",d:"hard",lc:"188",gfg:"",tuf:"https://takeuforward.org/data-structures/buy-and-sell-stocks-dp-38/"},
+{id:"p427",n:"Best Time to Buy and Sell Stock with Cooldown",d:"medium",lc:"309",gfg:"",tuf:"https://takeuforward.org/data-structures/buy-and-sell-stock-with-cool-down/"},
+{id:"p428",n:"Best Time to Buy and Sell Stock with Transaction Fee",d:"medium",lc:"714",gfg:"",tuf:"https://takeuforward.org/data-structures/buy-and-sell-stocks-with-transaction-fees-dp-40/"}
+]},
+{t:"16.6 — DP on LIS",probs:[
+{id:"p429",n:"Longest Increasing Subsequence",d:"medium",lc:"300",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-increasing-subsequence-dp-41/"},
+{id:"p430",n:"Print Longest Increasing Subsequence",d:"medium",lc:"",gfg:"print-longest-increasing-subsequence",tuf:"https://takeuforward.org/data-structures/printing-longest-increasing-subsequence-dp-42/"},
+{id:"p431",n:"Largest Divisible Subset",d:"medium",lc:"368",gfg:"",tuf:"https://takeuforward.org/data-structures/largest-divisible-subset-dp-44/"},
+{id:"p432",n:"Longest String Chain",d:"medium",lc:"1048",gfg:"",tuf:"https://takeuforward.org/data-structures/longest-string-chain-dp-45/"},
+{id:"p433",n:"Longest Bitonic Subsequence",d:"hard",lc:"",gfg:"longest-bitonic-subsequence",tuf:"https://takeuforward.org/data-structures/longest-bitonic-subsequence-dp-46/"},
+{id:"p434",n:"Number of Longest Increasing Subsequences",d:"hard",lc:"673",gfg:"",tuf:"https://takeuforward.org/data-structures/number-of-longest-increasing-subsequences-dp-47/"}
+]},
+{t:"16.7 — MCM / Partition DP",probs:[
+{id:"p435",n:"Matrix Chain Multiplication | Memoization",d:"hard",lc:"",gfg:"matrix-chain-multiplication0",tuf:"https://takeuforward.org/data-structures/matrix-chain-multiplication-dp-48/"},
+{id:"p436",n:"Matrix Chain Multiplication | Tabulation",d:"hard",lc:"",gfg:"matrix-chain-multiplication0",tuf:"https://takeuforward.org/data-structures/matrix-chain-multiplication-dp-48/"},
+{id:"p437",n:"Minimum Cost to Cut the Stick",d:"hard",lc:"1547",gfg:"",tuf:"https://takeuforward.org/data-structures/minimum-cost-to-cut-the-stick-dp-50/"},
+{id:"p438",n:"Burst Balloons",d:"hard",lc:"312",gfg:"",tuf:"https://takeuforward.org/data-structures/burst-balloons-dp-51/"},
+{id:"p439",n:"Boolean Parenthesization",d:"hard",lc:"",gfg:"boolean-parenthesization",tuf:"https://takeuforward.org/data-structures/boolean-parenthesization-dp-52/"},
+{id:"p440",n:"Palindrome Partitioning II",d:"hard",lc:"132",gfg:"",tuf:"https://takeuforward.org/data-structures/palindrome-partitioning-ii-dp-54/"},
+{id:"p441",n:"Partition Array for Maximum Sum",d:"medium",lc:"1043",gfg:"",tuf:"https://takeuforward.org/data-structures/partition-array-for-maximum-sum-dp-54/"},
+{id:"p442",n:"Maximal Square",d:"medium",lc:"221",gfg:"",tuf:"https://takeuforward.org/data-structures/maximal-squares-leetcode/"},
+{id:"p443",n:"Count Square Submatrices with All Ones",d:"medium",lc:"1277",gfg:"",tuf:"https://takeuforward.org/data-structures/count-square-submatrices-with-all-ones/"}
+]}
+]},
+{step:17,title:"Tries",topics:[
+{t:"17.1 — Theory & Problems",probs:[
+{id:"p444",n:"Implement TRIE | INSERT | SEARCH | STARTSWITH",d:"medium",lc:"208",gfg:"trie-insert-and-search",tuf:"https://takeuforward.org/data-structures/implement-trie-1/"},
+{id:"p445",n:"Implement Trie II (Count Prefix and Words)",d:"medium",lc:"",gfg:"trie-insert-and-search",tuf:"https://takeuforward.org/data-structures/implement-trie-ii/"},
+{id:"p446",n:"Longest String with All Prefixes",d:"medium",lc:"",gfg:"longest-string-with-all-prefixes",tuf:"https://takeuforward.org/data-structures/complete-string/"},
+{id:"p447",n:"Number of Distinct Substrings in a String",d:"hard",lc:"",gfg:"number-of-distinct-substrings-in-a-string",tuf:"https://takeuforward.org/data-structures/number-of-distinct-substrings-in-a-string/"},
+{id:"p448",n:"Bit Manipulation + Tries",d:"hard",lc:"",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-xor-of-two-numbers-in-an-array/"},
+{id:"p449",n:"Maximum XOR of Two Numbers in an Array",d:"hard",lc:"421",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-xor-of-two-numbers-in-an-array/"},
+{id:"p450",n:"Maximum XOR With an Element From Array",d:"hard",lc:"1707",gfg:"",tuf:"https://takeuforward.org/data-structures/maximum-xor-with-an-element-from-array/"}
+]}
+]}
+];
+
+// ===================== PROGRESS =====================
+let progress={};
+try{const s=localStorage.getItem('a2z_v3');if(s)progress=JSON.parse(s);}catch(e){}
+
+function saveAll(){
+  try{localStorage.setItem('a2z_v3',JSON.stringify(progress));}catch(e){}
+  updateGlobal();
+}
+
+// Collect stats
+let totalProbs=0, totalEasy=0, totalMed=0, totalHard=0;
+DATA.forEach(s=>s.topics.forEach(t=>t.probs.forEach(p=>{
+  totalProbs++;
+  if(p.d==='easy')totalEasy++;
+  else if(p.d==='medium')totalMed++;
+  else if(p.d==='hard')totalHard++;
+})));
+
+// ===================== TOGGLE LOGIC =====================
+function toggle(id, e){
+  e.stopPropagation();
+  const st=progress[id]||'';
+  progress[id]= st==='solved' ? '' : 'solved';
+  renderRow(id);
+  saveAll();
+}
+function toggleRev(id, e){
+  e.stopPropagation();
+  const st=progress[id]||'';
+  progress[id]= st==='revision' ? (st==='solved'?'solved':'') : 'revision';
+  if(progress[id]==='')progress[id]='revision';
+  renderRow(id);
+  saveAll();
+}
+function renderRow(id){
+  const el=document.getElementById('r_'+id);
+  if(!el)return;
+  const st=progress[id]||'';
+  el.className='prob-row'+(st?' '+st:'');
+  const cb=el.querySelector('.check-box');
+  cb.textContent=st==='solved'?'✓':st==='revision'?'↻':'';
+  const rb=el.querySelector('.rev-btn');
+  rb.textContent=st==='revision'?'★ Rev':'☆ Rev';
+  // Update parent step
+  const stepEl=el.closest('.step');
+  if(stepEl)updateStep(stepEl);
+}
+
+function updateStep(stepEl){
+  if(!stepEl)return;
+  const rows=[...stepEl.querySelectorAll('.prob-row')];
+  const done=rows.filter(r=>r.classList.contains('solved')||r.classList.contains('revision')).length;
+  const pct=rows.length?Math.round(done/rows.length*100):0;
+  const fill=stepEl.querySelector('.step-fill');
+  const pctEl=stepEl.querySelector('.step-pct');
+  if(fill)fill.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=pct+'%';
+  stepEl.classList.toggle('has-progress', done>0);
+}
+
+function updateGlobal(){
+  let solved=0, easy=0, med=0, hard=0, rev=0;
+  DATA.forEach(s=>s.topics.forEach(t=>t.probs.forEach(p=>{
+    const st=progress[p.id]||'';
+    if(st==='solved'||st==='revision'){
+      solved++;
+      if(p.d==='easy')easy++;
+      else if(p.d==='medium')med++;
+      else if(p.d==='hard')hard++;
+    }
+    if(st==='revision')rev++;
+  })));
+  const pct=Math.round(solved/totalProbs*100);
+  document.getElementById('global-fill').style.width=pct+'%';
+  document.getElementById('global-stats').textContent=solved+' / '+totalProbs;
+  document.getElementById('st-total').textContent=solved;
+  document.getElementById('st-total-sub').textContent='out of '+totalProbs;
+  document.getElementById('st-easy').textContent=easy;
+  document.getElementById('st-easy-sub').textContent='of '+totalEasy;
+  document.getElementById('st-med').textContent=med;
+  document.getElementById('st-med-sub').textContent='of '+totalMed;
+  document.getElementById('st-hard').textContent=hard;
+  document.getElementById('st-hard-sub').textContent='of '+totalHard;
+  document.getElementById('st-rev').textContent=rev;
+  document.getElementById('st-pct').textContent=pct+'%';
+  const msgs=['just started!','keep going!','quarter done!','halfway there!','almost there!','completed! 🎉'];
+  const mi=pct>=100?5:pct>=75?4:pct>=50?3:pct>=25?2:pct>0?1:0;
+  document.getElementById('st-streak').textContent=msgs[mi];
+}
+
+// ===================== BUILD HTML =====================
+// Build a flat map of id -> {prob, stepTitle, topicTitle, num}
+let probMap={};
+function buildProbMap(){
+  let n=0;
+  DATA.forEach(step=>step.topics.forEach(topic=>topic.probs.forEach(p=>{
+    n++;
+    probMap[p.id]={...p,stepTitle:step.title,topicTitle:topic.t,num:n};
+  })));
+}
+buildProbMap();
+
+
+
+function buildHTML(){
+  let html='';
+  let pNum=0;
+  DATA.forEach((step,si)=>{
+    const totalInStep=step.topics.reduce((a,t)=>a+t.probs.length,0);
+    html+=`<div class="step" id="step_${si}">
+<div class="step-header" onclick="toggleStep(${si})">
+<span class="step-num">Step ${step.step}</span>
+<span class="step-title">${step.title}</span>
+<span class="step-count">${totalInStep} problems</span>
+<div class="step-progress-wrap">
+<div class="step-bar"><div class="step-fill" style="width:0%"></div></div>
+<span class="step-pct">0%</span>
+</div>
+<span class="chevron" id="chev_${si}">▼</span>
+</div>
+<div class="step-body" id="sbody_${si}">`;
+    step.topics.forEach((topic,ti)=>{
+      html+=`<div class="topic" id="topic_${si}_${ti}">
+<div class="topic-header" onclick="toggleTopic(${si},${ti})">
+<span class="topic-chevron" id="tchev_${si}_${ti}">▶</span>
+<span>${topic.t}</span>
+<span class="topic-count">&nbsp;(${topic.probs.length})</span>
+</div>
+<div class="topic-body" id="tbody_${si}_${ti}">`;
+      topic.probs.forEach(p=>{
+        pNum++;
+        const st=progress[p.id]||'';
+        const cls=st?` ${st}`:'';
+        const chk=st==='solved'?'✓':st==='revision'?'↻':'';
+        const rev=st==='revision'?'★ Rev':'☆ Rev';
+        let links='';
+        if(p.lc)links+=`<a class="prob-link lc-link" href="https://leetcode.com/problems/list/?problemIds=${p.lc}" target="_blank" onclick="event.stopPropagation()">LC</a>`;
+        if(p.gfg)links+=`<a class="prob-link gfg-link" href="https://www.geeksforgeeks.org/problems/${p.gfg}" target="_blank" onclick="event.stopPropagation()">GFG</a>`;
+        const ytUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(p.n+' dsa problem solution');
+        const articleUrl='https://www.google.com/search?q='+encodeURIComponent(p.n+' dsa problem solution');
+        links+=`<a class="prob-link yt-link" href="${ytUrl}" target="_blank" onclick="event.stopPropagation()">YT</a>`;
+        links+=`<a class="prob-link article-link" href="${articleUrl}" target="_blank" onclick="event.stopPropagation()">SRC</a>`;
+        html+=`<div class="prob-row${cls}" id="r_${p.id}">
+<div class="check-box" onclick="toggle('${p.id}',event)">${chk}</div>
+<span class="prob-num">${String(pNum).padStart(3,'0')}</span>
+<span class="prob-name" onclick="openDrawer('${p.id}',event)">${p.n}</span>
+<span class="diff-badge ${p.d||'unknown'}" onclick="openDrawer('${p.id}',event)">${p.d||'?'}</span>
+<div class="prob-links">${links}</div>
+<button class="rev-btn" onclick="toggleRev('${p.id}',event)">${rev}</button>
+</div>`;
+      });
+      html+='</div></div>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('main').innerHTML=html;
+  DATA.forEach((_,si)=>updateStep(document.getElementById('step_'+si)));
+  updateGlobal();
+}
+
+// ===================== TOGGLE OPEN/CLOSE =====================
+function toggleStep(si){
+  const body=document.getElementById('sbody_'+si);
+  const chev=document.getElementById('chev_'+si);
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+}
+function toggleTopic(si,ti){
+  const body=document.getElementById('tbody_'+si+'_'+ti);
+  const chev=document.getElementById('tchev_'+si+'_'+ti);
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+}
+function expandAll(){
+  DATA.forEach((_,si)=>{
+    document.getElementById('sbody_'+si).classList.add('open');
+    document.getElementById('chev_'+si).classList.add('open');
+    _.topics.forEach((__,ti)=>{
+      document.getElementById('tbody_'+si+'_'+ti).classList.add('open');
+      document.getElementById('tchev_'+si+'_'+ti).classList.add('open');
+    });
+  });
+}
+function collapseAll(){
+  DATA.forEach((_,si)=>{
+    document.getElementById('sbody_'+si).classList.remove('open');
+    document.getElementById('chev_'+si).classList.remove('open');
+    _.topics.forEach((__,ti)=>{
+      document.getElementById('tbody_'+si+'_'+ti).classList.remove('open');
+      document.getElementById('tchev_'+si+'_'+ti).classList.remove('open');
+    });
+  });
+}
+
+// ===================== FILTER =====================
+function filterProblems(){
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  const fs=document.getElementById('fStatus').value;
+  const fd=document.getElementById('fDiff').value;
+  const isFiltering=q||fs||fd;
+
+  DATA.forEach((step,si)=>{
+    let stepHasVisible=false;
+    step.topics.forEach((topic,ti)=>{
+      let topicHasVisible=false;
+      topic.probs.forEach(p=>{
+        const row=document.getElementById('r_'+p.id);
+        if(!row)return;
+        const st=progress[p.id]||'';
+        const matchQ=!q||p.n.toLowerCase().includes(q);
+        const matchS=!fs||(fs==='solved'&&st==='solved')||(fs==='revision'&&st==='revision')||(fs==='unsolved'&&!st);
+        const matchD=!fd||p.d===fd;
+        const visible=matchQ&&matchS&&matchD;
+        row.classList.toggle('hidden-prob',!visible);
+        if(visible){topicHasVisible=true;stepHasVisible=true;}
+      });
+      const topicEl=document.getElementById('topic_'+si+'_'+ti);
+      if(topicEl)topicEl.classList.toggle('hidden-topic',!topicHasVisible);
+      if(isFiltering&&topicHasVisible){
+        document.getElementById('tbody_'+si+'_'+ti).classList.add('open');
+        document.getElementById('tchev_'+si+'_'+ti).classList.add('open');
+      }
+    });
+    const stepEl=document.getElementById('step_'+si);
+    if(stepEl)stepEl.classList.toggle('hidden-step',!stepHasVisible);
+    if(isFiltering&&stepHasVisible){
+      document.getElementById('sbody_'+si).classList.add('open');
+      document.getElementById('chev_'+si).classList.add('open');
+    }
+  });
+}
+
+// ===================== EXPORT / IMPORT =====================
+function exportData(){
+  const data={version:3,progress,exported:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='a2z_dsa_progress.json';
+  a.click();
+  showToast('✅ Progress exported!');
+}
+function importData(e){
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data.progress){
+        progress=data.progress;
+        saveAll();
+        buildHTML();
+        showToast('✅ Progress imported!');
+      }else{throw new Error();}
+    }catch{showToast('❌ Invalid file');}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+}
+function resetAll(){
+  if(confirm('Reset all progress? This cannot be undone.')){
+    progress={};
+    saveAll();
+    buildHTML();
+    showToast('🔄 Progress reset');
+  }
+}
+
+// ===================== TOAST =====================
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.display='block';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.style.display='none',2500);
+}
+
+// ===================== DRAWER =====================
+let currentDrawerId=null;
+let notes={};
+try{const s=localStorage.getItem('a2z_notes');if(s)notes=JSON.parse(s);}catch(e){}
+
+function openDrawer(id,e){
+  if(e)e.stopPropagation();
+  currentDrawerId=id;
+  const p=probMap[id];
+  if(!p)return;
+
+  // Title & diff
+  document.getElementById('drawer-title').textContent=p.n;
+  document.getElementById('drawer-num').textContent='#'+String(p.num).padStart(3,'0')+' · '+p.topicTitle;
+  const diffEl=document.getElementById('drawer-diff');
+  diffEl.textContent=p.d||'?';
+  diffEl.className='diff-badge '+(p.d||'unknown');
+
+  // Action buttons
+  updateDrawerActions(id);
+
+  // Platform links
+  const container=document.getElementById('drawer-links');
+  let linksHtml='';
+
+  const ytUrl='https://www.youtube.com/results?search_query='+encodeURIComponent(p.n+' dsa problem solution');
+  linksHtml+=`<a class="platform-btn btn-yt" href="${ytUrl}" target="_blank">
+    <div class="platform-btn-icon">▶️</div>
+    <div class="platform-btn-info">
+      <span class="platform-btn-name">YouTube Video</span>
+      <span class="platform-btn-desc">Search for video explanations</span>
+    </div>
+    <span class="platform-btn-arrow">→</span>
+  </a>`;
+
+  const articleUrl='https://www.google.com/search?q='+encodeURIComponent(p.n+' dsa problem solution geeksforgeeks leetcode');
+  linksHtml+=`<a class="platform-btn btn-article" href="${articleUrl}" target="_blank">
+    <div class="platform-btn-icon">📄</div>
+    <div class="platform-btn-info">
+      <span class="platform-btn-name">Related Article</span>
+      <span class="platform-btn-desc">Search for related articles & solutions</span>
+    </div>
+    <span class="platform-btn-arrow">→</span>
+  </a>`;
+
+  if(p.lc){
+    linksHtml+=`<a class="platform-btn btn-lc" href="https://leetcode.com/problems/list/?problemIds=${p.lc}" target="_blank">
+      <div class="platform-btn-icon">🟡</div>
+      <div class="platform-btn-info">
+        <span class="platform-btn-name">LeetCode</span>
+        <span class="platform-btn-desc">Practice on LeetCode — Problem #${p.lc}</span>
+      </div>
+      <span class="platform-btn-arrow">→</span>
+    </a>`;
+  } else {
+    linksHtml+=`<div class="platform-btn btn-lc btn-disabled">
+      <div class="platform-btn-icon">🟡</div>
+      <div class="platform-btn-info">
+        <span class="platform-btn-name">LeetCode</span>
+        <span class="platform-btn-desc">No LeetCode link for this problem</span>
+      </div>
+    </div>`;
+  }
+
+  if(p.gfg){
+    linksHtml+=`<a class="platform-btn btn-gfg" href="https://www.geeksforgeeks.org/problems/${p.gfg}" target="_blank">
+      <div class="platform-btn-icon">🟢</div>
+      <div class="platform-btn-info">
+        <span class="platform-btn-name">GeeksForGeeks</span>
+        <span class="platform-btn-desc">Practice on GFG platform</span>
+      </div>
+      <span class="platform-btn-arrow">→</span>
+    </a>`;
+  } else {
+    linksHtml+=`<div class="platform-btn btn-gfg btn-disabled">
+      <div class="platform-btn-icon">🟢</div>
+      <div class="platform-btn-info">
+        <span class="platform-btn-name">GeeksForGeeks</span>
+        <span class="platform-btn-desc">No GFG link for this problem</span>
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML=linksHtml;
+
+  // Notes
+  document.getElementById('drawer-notes').value=notes[id]||'';
+
+  // Open
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+function updateDrawerActions(id){
+  const st=progress[id]||'';
+  const btnS=document.getElementById('da-solve');
+  const btnR=document.getElementById('da-rev');
+  btnS.className='drawer-action-btn'+(st==='solved'?' active-solved':'');
+  btnS.textContent=st==='solved'?'✓ Solved — Click to Undo':'✓ Mark as Solved';
+  btnR.className='drawer-action-btn'+(st==='revision'?' active-rev':'');
+  btnR.textContent=st==='revision'?'↻ In Revision — Click to Undo':'↻ Mark for Revision';
+}
+
+function drawerToggleSolve(){
+  if(!currentDrawerId)return;
+  const st=progress[currentDrawerId]||'';
+  progress[currentDrawerId]=st==='solved'?'':'solved';
+  renderRow(currentDrawerId);
+  saveAll();
+  updateDrawerActions(currentDrawerId);
+}
+function drawerToggleRev(){
+  if(!currentDrawerId)return;
+  const st=progress[currentDrawerId]||'';
+  progress[currentDrawerId]=st==='revision'?'':'revision';
+  renderRow(currentDrawerId);
+  saveAll();
+  updateDrawerActions(currentDrawerId);
+}
+
+function saveNote(){
+  if(!currentDrawerId)return;
+  notes[currentDrawerId]=document.getElementById('drawer-notes').value;
+  try{localStorage.setItem('a2z_notes',JSON.stringify(notes));}catch(e){}
+  showToast('📝 Note saved!');
+}
+
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('active');
+  document.body.style.overflow='';
+  currentDrawerId=null;
+}
+
+// Keyboard close
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+// ===================== INIT =====================
+buildHTML();
+</script>
+</body>
+</html>
